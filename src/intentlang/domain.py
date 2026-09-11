@@ -89,7 +89,7 @@ DOMAIN_TABLE: dict[str, dict[str, str]] = {
         "en": "move",
         "zh": "移动",
         "ja": "移動",
-        "ar": "نقل",
+        "ar": "حرك",
         "fi": "siirtää",
         "he": "להזיז",
         "ko": "이동",
@@ -309,6 +309,26 @@ DOMAIN_PRIMITIVE_MAP: dict[str, str] = {
     "verify": "VERIFY",
     "render": "RENDER",
     "compress": "COMPRESS",
+}
+
+
+# ============================================================
+# DOMAIN COLLISIONS: lemas que el oraculo RECHAZO para una fila
+# ============================================================
+
+# No se borran en silencio: quedan registrados con su evidencia, para que
+# reintroducirlos en DOMAIN_TABLE sea un acto deliberado. Un test verifica
+# que ninguno reaparece en la fila que lo rechazo y que el oraculo sigue
+# midiendo lo mismo (la colision es hecho del lexico, no opinion).
+DOMAIN_COLLISIONS: dict[str, dict[str, str]] = {
+    "نقل": {
+        "lang": "ar",
+        "rejected_for": "move",
+        "oracle_resolves_to": "COPY",
+        "replaced_by": "حرك",
+        "note": "naqal es 'transferir': el oraculo lo ejecuta como COPY por ILI. "
+                "El canonico de MOVE en ar es حرك (el corpus seed ya lo usaba).",
+    },
 }
 
 

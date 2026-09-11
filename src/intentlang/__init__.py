@@ -41,6 +41,7 @@ from .discovery import (
     verify_candidate,
 )
 from .domain import (
+    DOMAIN_COLLISIONS,
     DOMAIN_PRIMITIVE_MAP,
     DOMAIN_TABLE,
     check_cross_lingual_convergence,
@@ -129,6 +130,7 @@ from .transaction import execute_transaction
 __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "DECLARED_GAPS",
     "DECLARED_OPERAND_PASSTHROUGH",
+    "DOMAIN_COLLISIONS",
     "DOMAIN_PRIMITIVE_MAP",
     # domain
     "DOMAIN_TABLE",

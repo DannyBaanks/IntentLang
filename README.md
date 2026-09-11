@@ -274,7 +274,7 @@ describirse como verificadas.
 | determinismo (strict) | igualdad de objeto mismo-proceso | byte-idéntico cross-process **NOT_DEMONSTRATED** |
 | convergencia (por ILI) | **0/3 grupos (0%)** | medido por la suite actual, reportado, no disfrazado — ver abajo |
 | paridad (oráculo ejecutivo) | **3/3 grupos (100%)** | misma huella SHA-256 en oráculo simbólico Y en fs real; controles de granularidad OK |
-| domain table con evidencia | 5 VERIFIED / 1 REJECTED / 12 NOT_DEMONSTRATED | `prove` sha256 `9787d5a7…`; ver sección del oráculo |
+| domain table con evidencia | 6 VERIFIED / 0 REJECTED / 12 NOT_DEMONSTRATED | `prove` sha256 `c55c11b4…`; ver sección del oráculo |
 | fix cobertura verbo | `duplicar` → COPY | i34961/i30414 verificado contra omw-es+en |
 | round-trip idioma objetivo completo | **NOT_DEMONSTRATED** | mensajes de envoltorio (Entendí/¿Correcto?) siguen en español; relexicalización de concepto funciona |
 | caché firmado asistido | **IMPLEMENTED (API)** | caché persistente local con `evidence_sha256` y firma SHA-256; `get_or_compute` conserva una IR mínima de la propuesta |
@@ -297,10 +297,11 @@ py -m intentlang.parity prove    # evidencia de la tabla -> data/domain_oracle_p
 ```
 
 Lo primero que el oráculo encontró al medir la tabla: la fila `move`
-afirmaba ar `نقل` como equivalente, pero su ejecución resuelve a COPY por
-ILI (huella distinta) → la fila queda REJECTED y, con el archivo de pruebas
-presente, `resolve_with_domain` no aplica override para `move` hasta que la
-tabla se corrija. Afirmar a mano ya no basta.
+afirmaba ar `نقل` como equivalente, pero su ejecución resolvía a COPY por
+ILI (huella distinta) → fila REJECTED. El matiz posterior: `move.ar` quedó
+en `حرك` (que el propio corpus seed ya usaba) y `نقل` no se borró en
+silencio — quedó en `DOMAIN_COLLISIONS` con su evidencia, y un test impide
+que reaparezca en la fila sin un acto deliberado. La fila hoy es VERIFIED.
 
 Controles obligatorios: las huellas de ADD/COPY/MOVE/REMOVE sobre el mismo
 símbolo deben ser todas distintas (granularidad); si colapsasen, la medición

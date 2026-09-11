@@ -179,6 +179,50 @@ def test_menos_de_dos_ejecutables_es_not_demonstrated():
 
 
 # ============================================================
+# Colisiones documentadas: los REJECTED dejan conocimiento
+# ============================================================
+
+
+def test_colision_nql_no_reaparece_en_move():
+    """La fila move afirmaba ar نقل; el oraculo demostro que ejecuta COPY.
+
+    La correccion fue matizar: move.ar quedo en حرك (que el corpus ya usaba)
+    y نقل quedo registrado en DOMAIN_COLLISIONS. Este test blinda ambos
+    lados: la colision no reaparece en la fila y el registro no se vacia.
+    """
+    from intentlang.domain import DOMAIN_COLLISIONS, DOMAIN_TABLE
+
+    for lemma, info in DOMAIN_COLLISIONS.items():
+        fila = DOMAIN_TABLE.get(info["rejected_for"], {})
+        assert fila.get(info["lang"]) != lemma, (
+            f"'{lemma}' reaparecio en la fila {info['rejected_for']} "
+            f"que el oraculo rechazo; si es deliberado, borra la colision"
+        )
+
+
+def test_colision_nql_sigue_resolviendo_copy():
+    """La divergencia original era real: نقل + ملف sigue ejecutando COPY.
+
+    Inferencia contraria: si un dia resuelve otra cosa, la evidencia vieja
+    hay que revisarla, no asumirla eterna.
+    """
+    run = run_surface("نقل الملف", "ar")
+    assert run.primitive == "COPY"
+    assert run.verdict == "EXECUTED"
+
+
+def test_move_corregido_converge():
+    """Tras el matiz, la fila move converge en el oraculo (misma huella)."""
+    report = parity_for_group(
+        [{"text": "mueve el archivo", "lang": "es"},
+         {"text": "move the file", "lang": "en"},
+         {"text": "حرك الملف", "lang": "ar"}],
+        "MOVE/file-fix",
+    )
+    assert report.verdict == VERIFIED, report.reason
+
+
+# ============================================================
 # Evidencia de la tabla de dominio
 # ============================================================
 
