@@ -308,6 +308,13 @@ símbolo deben ser todas distintas (granularidad); si colapsasen, la medición
 entera sería trampa y el test lo grita. Superficies no resolubles o sin
 hipótesis quedan `NOT_RESOLVED`/`NOT_INSTANTIABLE` y se listan como gaps.
 
+El CLI además desglosa por escritura (`latin/cjk/arabic/…`) como
+**diagnóstico**: dice dónde duele (tokenizer, alfabeto, semántica). Lo que
+nunca hace es sustituir el veredicto global: un tier que converge no hace
+VERIFIED a nada, y el global se imprime siempre al lado. Medir solo los
+idiomas fáciles y callarse el resto sería exactamente la métrica trampa que
+este repo se prohibió.
+
 ## Licencia
 
 MIT.

@@ -223,6 +223,38 @@ def test_move_corregido_converge():
 
 
 # ============================================================
+# Tiers por escritura: diagnostico, nunca sustituto del global
+# ============================================================
+
+
+def test_tiers_diagnostican_sin_sustituir():
+    """El breakdown por escritura muestra donde duele, y el veredicto
+    global sigue siendo el que manda: un tier convergiendo no convierte
+    REJECTED en VERIFIED jamas."""
+    from intentlang.parity import tier_breakdown
+
+    report = parity_for_group(
+        [{"text": "copia el archivo", "lang": "es"},
+         {"text": "copy the file", "lang": "en"},
+         {"text": "删除文件", "lang": "zh"}],
+        "tiers-mixto",
+    )
+    tiers = tier_breakdown(report)
+    assert tiers["latin"]["runs"] == 2
+    assert tiers["latin"]["converged"] is True       # es+en colapsan
+    assert tiers["cjk"]["converged"] is None          # zh solo: no se afirma nada
+    # ...y el veredicto global refleja la divergencia real (COPY vs REMOVE)
+    assert report.verdict == REJECTED
+
+
+def test_script_tier_cubre_los_idiomas_del_corpus():
+    from intentlang.parity import script_tier
+
+    for caso in cargar():
+        assert script_tier(caso["lang"]) != "unknown", caso["lang"]
+
+
+# ============================================================
 # Evidencia de la tabla de dominio
 # ============================================================
 

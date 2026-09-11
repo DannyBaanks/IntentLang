@@ -277,8 +277,13 @@ def parity_for_group(
     controls_ok = len(set(controls.values())) == len(controls)
 
     executed = [r for r in runs if r.verdict == "EXECUTED"]
+    # GAP es TODO lo no ejecutado: no instanciable, no resuelto, idioma sin
+    # lexico, primitiva sin semantica, error de oraculo. Reportarlos todos es
+    # la mitad del valor: el mapa de cobertura real, no el subconjunto bonito.
     gaps = tuple(
-        f"{r.lang}:{r.surface} ({r.note})" for r in runs if r.verdict == "NOT_INSTANTIABLE"
+        f"{r.lang}:{r.surface} [{r.verdict}] ({r.note})"
+        for r in runs
+        if r.verdict != "EXECUTED"
     )
 
     if not controls_ok:
@@ -316,6 +321,47 @@ def parity_for_group(
                         f"{len(executed)} superficies, misma huella en "
                         f"{'ambos oraculos' if real else 'oraculo simbolico'}",
                         runs, controls_ok, controls, gaps)
+
+
+# ============================================================
+# Tiers por escritura: diagnostico, NUNCA sustituto del veredicto
+# ============================================================
+
+_SCRIPT_TIER: dict[str, str] = {
+    "es": "latin", "en": "latin", "fi": "latin", "tr": "latin", "vi": "latin",
+    "zh": "cjk", "ja": "cjk",
+    "ar": "arabic", "he": "hebrew",
+    "ko": "hangul", "th": "thai", "ru": "cyrillic", "hi": "devanagari",
+}
+
+
+def script_tier(lang: str) -> str:
+    return _SCRIPT_TIER.get(lang, "unknown")
+
+
+def tier_breakdown(report: ParityReport) -> dict[str, dict]:
+    """Convergencia INTRA-tier de un grupo, como diagnostico.
+
+    Regla anti-trampa: esto existe para saber DONDE duele (tokenizer,
+    escritura, semantica), no para inflar la metrica. El veredicto del
+    grupo sigue siendo el global; un tier convergiendo no hace VERIFIED a
+    nada. El dia que alguien reporte solo los tiers y esconda el global,
+    esto se habra convertido en la metrica trampa que el README prohibe.
+    """
+    tiers: dict[str, list[SurfaceRun]] = {}
+    for run in report.runs:
+        if run.verdict == "EXECUTED":
+            tiers.setdefault(script_tier(run.lang), []).append(run)
+    out: dict[str, dict] = {}
+    for tier, runs in tiers.items():
+        fingerprints = {r.symbolic_fingerprint for r in runs}
+        out[tier] = {
+            "runs": len(runs),
+            "langs": sorted(r.lang for r in runs),
+            # None = un solo run: no hay par que comparar, no se afirma nada
+            "converged": (len(fingerprints) == 1) if len(runs) >= 2 else None,
+        }
+    return out
 
 
 # ============================================================
@@ -426,6 +472,12 @@ def main(argv: list[str] | None = None) -> int:
                                         (por defecto data/domain_oracle_proofs.json).
     """
     import argparse
+    import sys
+
+    # El reporte lleva superficies CJK/arabes: cp1252 las mata a mitad de
+    # linea. UTF-8 o nada (y nunca morir por una terminal).
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     parser = argparse.ArgumentParser(prog="intentlang.parity")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -448,6 +500,10 @@ def main(argv: list[str] | None = None) -> int:
         verified = sum(1 for r in reports if r.verdict == VERIFIED)
         for r in reports:
             print(f"  {r.verdict:16} {r.label:14} {r.reason}")
+            for tier, info in tier_breakdown(r).items():
+                conv = ("converge" if info["converged"] else
+                        "DIVERGE" if info["converged"] is False else "single")
+                print(f"      tier {tier:10} {conv:9} langs={','.join(info['langs'])}")
             for gap in r.gaps:
                 print(f"    GAP {gap}")
         print(f"paridad oraculo: {verified}/{len(reports)} grupos"
