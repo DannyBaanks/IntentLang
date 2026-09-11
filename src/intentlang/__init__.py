@@ -75,6 +75,16 @@ from .malbolge_validator import (
     validate_malbolge_pipeline,
 )
 from .normalize import tokens, verb_candidates
+from .oracle import Execution, fingerprint, granularity_controls
+from .parity import (
+    ParityReport,
+    SurfaceRun,
+    parity_for_group,
+    prove_domain_table,
+    run_corpus_parity,
+    run_surface,
+    symbol_for_lemma,
+)
 from .portable_codegen import PortableCodegenError, PortableSource, generate_program_source
 from .primitives import DECLARED_GAPS, MAX_ENTRIES, load_map, primitive_for
 from .program import (
@@ -141,6 +151,7 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "ExecutionError",
     "Intent",
     "LexiconUnavailable",
+    "ParityReport",
     # malbolge
     "MalbolgeEvidence",
     "MalbolgeValidator",
@@ -162,6 +173,7 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "SignedAssistedCache",
     "SimilarityResult",
     "Status",
+    "SurfaceRun",
     "UnsupportedLanguage",
     "ValueType",
     "WordNetSemantic",
@@ -194,6 +206,10 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "get_malbolge_validator",
     "get_semantic_backend",
     "get_semantic_router",
+    "granularity_controls",
+    # oracle / parity
+    "Execution",
+    "fingerprint",
     "if_",
     "let",
     "list_capabilities",
@@ -211,7 +227,9 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "map_",
     "primitive_for",
     "parse_structured",
+    "parity_for_group",
     "plan_program",
+    "prove_domain_table",
     # propose
     "propose",
     "register_capability",
@@ -223,10 +241,13 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "ref",
     # relex
     "round_trip",
+    "run_corpus_parity",
     "run_structured",
+    "run_surface",
     "semantic_similarity",
     "senses",
     "seq",
+    "symbol_for_lemma",
     # lexicon
     "source_id",
     "store",

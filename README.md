@@ -266,18 +266,46 @@ Para validar generación COBOL, crea un `Program IR`, genera la fuente con
 el binario resultante. Las capabilities que siguen siendo hooks no deben
 describirse como verificadas.
 
-## Estado medido (2026-08-28)
+## Estado medido (2026-08-28; oráculo 2026-08-30)
 
 | métrica | valor | nota |
 |---|---|---|
 | separación | **100%** | invariante que rompe el build, cero colisiones entre casos RESOLVED etiquetados |
 | determinismo (strict) | igualdad de objeto mismo-proceso | byte-idéntico cross-process **NOT_DEMONSTRATED** |
-| convergencia | **0/3 grupos (0%)** | medido por la suite actual, reportado, no disfrazado — ver abajo |
+| convergencia (por ILI) | **0/3 grupos (0%)** | medido por la suite actual, reportado, no disfrazado — ver abajo |
+| paridad (oráculo ejecutivo) | **3/3 grupos (100%)** | misma huella SHA-256 en oráculo simbólico Y en fs real; controles de granularidad OK |
+| domain table con evidencia | 5 VERIFIED / 1 REJECTED / 12 NOT_DEMONSTRATED | `prove` sha256 `9787d5a7…`; ver sección del oráculo |
 | fix cobertura verbo | `duplicar` → COPY | i34961/i30414 verificado contra omw-es+en |
 | round-trip idioma objetivo completo | **NOT_DEMONSTRATED** | mensajes de envoltorio (Entendí/¿Correcto?) siguen en español; relexicalización de concepto funciona |
 | caché firmado asistido | **IMPLEMENTED (API)** | caché persistente local con `evidence_sha256` y firma SHA-256; `get_or_compute` conserva una IR mínima de la propuesta |
 
 **Por qué 0% convergencia es honesto:** en omw-*:1.4, `archivo`(es), `file`(en) y `文件`(zh) no comparten **ningún** ILI (es tiene i50132/i71104 = sentidos *archive*; el ILI de archivo-informático i70665 existe solo en en/zh). La suite documenta esto como gap léxico conocido — arreglarlo requiere un wordnet español mejor o una tabla de dominio explícita, no adivinanza silenciosa.
+
+## Oráculo de paridad semántica
+
+La convergencia por ILI mide la salud del lexicón. La paridad por oráculo
+mide lo que el sistema **demuestra ejecutando**: cada superficie pasa por dos
+oráculos — la máquina simbólica de `oracle.py` y el filesystem real
+(`cap.fs.*` en tmpdir) — y la paridad exige que **ambas** huellas SHA-256 del
+estado resultante coincidan. La DOMAIN_TABLE es la hipótesis bajo prueba, no
+una verdad afirmada: sin hipótesis no hay instanciación, y los gaps se
+reportan, no se rellenan.
+
+```powershell
+py -m intentlang.parity corpus   # paridad del corpus: 3/3 grupos VERIFIED
+py -m intentlang.parity prove    # evidencia de la tabla -> data/domain_oracle_proofs.json + sha256
+```
+
+Lo primero que el oráculo encontró al medir la tabla: la fila `move`
+afirmaba ar `نقل` como equivalente, pero su ejecución resuelve a COPY por
+ILI (huella distinta) → la fila queda REJECTED y, con el archivo de pruebas
+presente, `resolve_with_domain` no aplica override para `move` hasta que la
+tabla se corrija. Afirmar a mano ya no basta.
+
+Controles obligatorios: las huellas de ADD/COPY/MOVE/REMOVE sobre el mismo
+símbolo deben ser todas distintas (granularidad); si colapsasen, la medición
+entera sería trampa y el test lo grita. Superficies no resolubles o sin
+hipótesis quedan `NOT_RESOLVED`/`NOT_INSTANTIABLE` y se listan como gaps.
 
 ## Licencia
 

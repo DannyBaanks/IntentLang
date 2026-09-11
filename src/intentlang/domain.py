@@ -10,6 +10,8 @@ no en adivinanza léxica.
 """
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 from .ir import Concept, Intent, Provenance, Status
@@ -311,18 +313,59 @@ DOMAIN_PRIMITIVE_MAP: dict[str, str] = {
 
 
 # ============================================================
+# ORACLE EVIDENCE: filas demostradas por ejecucion (parity.py)
+# ============================================================
+
+_PROOFS_PATH = Path(__file__).resolve().parents[2] / "data" / "domain_oracle_proofs.json"
+
+
+def load_oracle_proofs(path: Path | None = None) -> dict:
+    """Evidencia de paridad por fila, o {} si aun no se ha generado.
+
+    El archivo lo produce `prove_domain_table()` (ver parity.py). Su ausencia
+    NO es un error: significa que ninguna fila tiene demostracion ejecutiva y
+    la tabla se trata como hipotesis no verificada (ver resolve_with_domain).
+    """
+    p = path or _PROOFS_PATH
+    if not p.exists():
+        return {}
+    raw = json.loads(p.read_text(encoding="utf-8"))
+    return raw.get("verdicts", {})
+
+
+def evidence_for(domain_id: str, proofs: dict | None = None) -> str:
+    """Veredicto del oraculo para una fila: VERIFIED / REJECTED / NOT_DEMONSTRATED.
+
+    Sin archivo de pruebas o sin entrada, TODA fila es NOT_DEMONSTRATED:
+    ausencia de evidencia no es evidencia de ausencia, pero tampoco es
+    permiso para actuar como si hubiera prueba.
+    """
+    proofs = load_oracle_proofs() if proofs is None else proofs
+    entry = proofs.get(domain_id)
+    if not entry:
+        return "NOT_DEMONSTRATED"
+    return entry.get("verdict", "NOT_DEMONSTRATED")
+
+
+# ============================================================
 # RESOLUTION CON DOMAIN TABLE
 # ============================================================
 
 def resolve_with_domain(text: str, lang: str, intent: Intent) -> Intent:
     """Aplica domain table como override cuando OMW no converge.
-    
+
     Flujo:
     1. Resolución normal (OMW)
     2. Si status != RESOLVED o operand ILI no converge cross-lang:
        - Buscar concept_id en DOMAIN_TABLE para el idioma
        - Si existe, forzar RESOLVED con operand canónico
        - Marcar provenance con resolution="domain_override"
+
+    Regla de evidencia (oraculo): con archivo de pruebas presente, el
+    override SOLO se aplica a filas con veredicto VERIFIED; una fila
+    REJECTED o sin demostrar no sobreescribe nada — la afirmacion a mano
+    no basta. Sin archivo, comportamiento legacy (la tabla manda) y la
+    IR queda marcada `degraded="domain_evidence_absent"`.
     """
     from .ir import Intent
     from .lexicon import senses
@@ -332,11 +375,17 @@ def resolve_with_domain(text: str, lang: str, intent: Intent) -> Intent:
         return intent
     
     # Buscar concept_id en domain table para este idioma
+    proofs = load_oracle_proofs()
     for domain_id, lang_map in DOMAIN_TABLE.items():
         if lang in lang_map and lang_map[lang] in text.lower():
             # Encontrado concepto de dominio en el texto
             primitive = DOMAIN_PRIMITIVE_MAP.get(domain_id)
             if primitive:
+                # Gate de evidencia: con pruebas presentes, solo las filas
+                # VERIFIED pueden sobreescribir una resolucion. Una fila
+                # afirmada a mano sin demostracion ejecutiva no actua.
+                if proofs and evidence_for(domain_id, proofs) != "VERIFIED":
+                    continue
                 # Construir operand canónico
                 operand_ili = f"domain:{domain_id}"  # ILI sintético de dominio
                 
@@ -360,7 +409,9 @@ def resolve_with_domain(text: str, lang: str, intent: Intent) -> Intent:
                 operand_ili = f"domain:{domain_id}"
                 operand = Concept(ili=operand_ili, lemma=lang_map.get("en", domain_id))
                 
-                # Nueva provenance con override
+                # Nueva provenance con override: si el sistema corre sin
+                # archivo de pruebas, el override queda marcado como no
+                # verificado por el oraculo. Nunca en silencio.
                 new_prov = Provenance(
                     surface=text,
                     language=lang,
@@ -368,6 +419,7 @@ def resolve_with_domain(text: str, lang: str, intent: Intent) -> Intent:
                     resolution="domain_override",
                     confidence="exact",
                     mode=intent.provenance.mode,
+                    degraded=None if proofs else "domain_evidence_absent",
                 )
                 
                 return Intent(
