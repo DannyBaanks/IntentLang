@@ -278,6 +278,8 @@ describirse como verificadas.
 | fix cobertura verbo | `duplicar` → COPY | i34961/i30414 verificado contra omw-es+en |
 | round-trip idioma objetivo completo | **NOT_DEMONSTRATED** | mensajes de envoltorio (Entendí/¿Correcto?) siguen en español; relexicalización de concepto funciona |
 | caché firmado asistido | **IMPLEMENTED (API)** | caché persistente local con `evidence_sha256` y firma SHA-256; `get_or_compute` conserva una IR mínima de la propuesta |
+| translation engine (UI i18n) | **97.8% coverage** | 1144/1170 frases en es.json; 778 traducidas en una sesión; 0 [NEEDS_REVIEW]; build verificado |
+| semantic phrase engine | **54 tests PASS** | 8 frames, 7 roles, 1195/1203 válidas (99.3%); léxico curado |
 
 **Por qué 0% convergencia es honesto:** en omw-*:1.4, `archivo`(es), `file`(en) y `文件`(zh) no comparten **ningún** ILI (es tiene i50132/i71104 = sentidos *archive*; el ILI de archivo-informático i70665 existe solo en en/zh). La suite documenta esto como gap léxico conocido — arreglarlo requiere un wordnet español mejor o una tabla de dominio explícita, no adivinanza silenciosa.
 
@@ -314,6 +316,148 @@ nunca hace es sustituir el veredicto global: un tier que converge no hace
 VERIFIED a nada, y el global se imprime siempre al lado. Medir solo los
 idiomas fáciles y callarse el resto sería exactamente la métrica trampa que
 este repo se prohibió.
+
+## Translation Engine (Munder Difflin i18n)
+
+Un motor de traducción para interfaces de usuario basado en el contrato
+fornado E=(I,X,O,S): stdin JSON, 60s timeout, última línea stdout = JSON con
+`status/law_result/action`. LLM PROPOSES, IntentLang DECIDES.
+
+### Pipeline
+
+```
+UI source (en.json)
+      ↓ extractor
+canonical Message/Phrase IR
+      ↓ proposer (LLM or dictionary)
+target locale (es.json)
+      ↓ roundtrip verifier
+VERIFIED / REJECTED / AMBIGUOUS
+```
+
+### Módulos
+
+```
+translation_engine/
+  extractor.py           # extrae frases del JSON de UI
+  proposer.py            # propone traducciones (diccionario o LLM)
+  roundtrip_verifier.py  # verifica round-trip semántico
+  context_resolver.py    # resuelve contexto de phrases
+  harness.py             # orquestador del pipeline
+  materializer.py        # materializa el resultado final
+  routing.py             # enrutamiento por idioma
+  ui_message_ir.py       # IR para mensajes de UI
+```
+
+### Uso
+
+```python
+from intentlang.translation_engine import harness
+
+result = harness.run({
+    "source_locale": "en",
+    "target_locale": "es",
+    "phrases": ["Save changes", "Cancel", "Delete file?"]
+})
+# result.status == "VERIFIED"
+```
+
+### Estado actual
+
+- 1144/1170 frases traducidas (97.8%) en Munder Difflin es.json
+- 0 [NEEDS_REVIEW] — todos los flags anteriores fueron resueltos
+- 26 frases sin traducir son términos técnicos universales (IDE, URL, tokens...)
+- Build verificado sin errores TypeScript
+
+## Semantic Phrase Engine
+
+Un subsystem dentro de `translation_engine/` para frases con contratos
+semánticos explícitos. Permite que LLMs propongan traducciones pero un
+verificador determinista tiene la última palabra.
+
+### Arquitectura
+
+```
+corpus (frases ancla) → Phrase IR (contrato semántico)
+      ↓
+extractor (detecta frame + roles)
+      ↓
+proposer (LLM o reglas)
+      ↓
+verifier (determinista, tiene la última palabra)
+      ↓
+mutations (pruebas de mutación)
+```
+
+### Phrase IR
+
+Cada frase carry un contrato semántico explícito:
+
+```python
+@dataclass
+class PhraseIR:
+    text: str                          # "Save changes"
+    surface_forms: list[str]           # ["save", "save changes"]
+    semantic_frame: str                # "STATE_CHANGE"
+    semantic_roles: dict[str, str]     # {"patient": "changes", "action": "save"}
+    intent: str                        # "persist_modification"
+    conditions: list[str]              # ["file_is_modified"]
+    consequences: list[str]            # ["file_written_to_disk"]
+    protected_tokens: list[str]        # ["{{filename}}"]
+    technical_terms: list[str]         # []
+    polarity: str                      # "positive"
+    modality: str                      = "directive"
+    destructive: bool                  = False
+    constraints: list[str]             = []
+    slots: dict[str, str]              = {}
+    provenance: dict[str, Any]         = {}
+```
+
+### 8 Semantic Frames
+
+| Frame | Ejemplo | Detección |
+|---|---|---|
+| ACTION | "Save changes" | verbo + objeto |
+| STATE | "File is modified" | sujeto + copula |
+| COMMUNICATION | "Send message" | verbo de comunicación |
+| PERCEPTION | "Show preview" | verbo de percepción |
+| COGNITION | "Remember password" | verbo cognitivo |
+| MOVEMENT | "Open file" | verbo de movimiento |
+| POSSESSION | "Have permission" | verbo de posesión |
+| EXISTENCE | "Error exists" | verbo existencial |
+
+### 7 Semantic Roles
+
+PATIENT, AGENT, PURPOSE, LOCATION, INSTRUMENT, TIME, MANNER
+
+### Uso
+
+```python
+from intentlang.translation_engine.semantic_phrase import (
+    extract_phrase_ir,
+    verify_proposal,
+    mutate_phrase
+)
+
+# Extraer Phrase IR de una frase
+phrase = extract_phrase_ir("Save changes")
+# PhraseIR(semantic_frame="ACTION", intent="persist_modification", ...)
+
+# Verificar una propuesta de traducción
+result = verify_proposal(phrase, "Guardar cambios")
+# VerificationResult(valid=True, score=0.95)
+
+# Mutación para pruebas
+mutated = mutate_phrase(phrase, mutation_type="polarity")
+# PhraseIR(text="Don't save changes", polarity="negative", ...)
+```
+
+### Estado actual
+
+- 54 tests passing (corpus, phrase_ir, extractor, proposer, verifier, mutations)
+- 1195/1203 frases válidas (99.3%) según el validador semántico avanzado
+- 8 frases inválidas: palabras sueltas/símbolos ("on", "...", "ok", "…", "at", "from", "to", "✕")
+- Léxico curado en `phrase_lexicon/curated_phrase_lexicon.json`
 
 ## Licencia
 

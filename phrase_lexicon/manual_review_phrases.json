@@ -1,0 +1,98 @@
+[
+  {
+    "key": "common.on",
+    "en": "on",
+    "es": "activado",
+    "validation_reason": "Score: 0.10 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.1,
+    "original": "on",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "agentDetail.opening",
+    "en": "...",
+    "es": "...",
+    "validation_reason": "Score: 0.10 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.1,
+    "original": "...",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "agentDetail.ok",
+    "en": "ok",
+    "es": "aceptar",
+    "validation_reason": "Score: 0.00 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.0,
+    "original": "ok",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "realtimeToggle.connecting",
+    "en": "…",
+    "es": "…",
+    "validation_reason": "Score: 0.00 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.0,
+    "original": "…",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "triggersUi.at",
+    "en": "at",
+    "es": "a las",
+    "validation_reason": "Score: 0.10 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.1,
+    "original": "at",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "triggerHistory.from",
+    "en": "from",
+    "es": "de",
+    "validation_reason": "Score: 0.10 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.1,
+    "original": "from",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "triggerHistory.to",
+    "en": "to",
+    "es": "a",
+    "validation_reason": "Score: 0.10 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.1,
+    "original": "to",
+    "fixed": null,
+    "fix_type": "no_fix"
+  },
+  {
+    "key": "integrations.failed",
+    "en": "✕",
+    "es": "✕",
+    "validation_reason": "Score: 0.00 (frames: [], roles: [])",
+    "detected_frames": [],
+    "detected_roles": [],
+    "overall_score": 0.0,
+    "original": "✕",
+    "fixed": null,
+    "fix_type": "no_fix"
+  }
+]

@@ -1,0 +1,3542 @@
+[
+  {
+    "key": "commandBar.busyNote",
+    "en": "Ada is mid-tool. Queue or hit pause.",
+    "es": "Ada está en medio de una herramienta. En cola o presione pausa.",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "costHud.overCap",
+    "en": "Over the spend cap — time to wrap up.",
+    "es": "Superar el límite de gasto — hora de terminar.",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "costHud.nearCap",
+    "en": "Approaching the spend cap.",
+    "es": "Acercándose al límite de gasto.",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.deliveryPaused",
+    "en": "queued messages held (whole floor)",
+    "es": "mensajes en cola retenidos (todo el piso)",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.halting",
+    "en": "stopping after this step…",
+    "es": "deteniendo después de este paso…",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.flashPaused",
+    "en": "tools blocked from the next call on",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.allowToolsTip",
+    "en": "Give its tools back. The agent keeps its session and picks up where it stopped.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.blockToolsAria",
+    "en": "Block this agent from using tools",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.stopAfterStep",
+    "en": "stop after this step",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentControl.stopAfterStepAria",
+    "en": "Stop this agent after the current step",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentCard.contextGaugeTitle",
+    "en": "Context gauge — fills once the agent reports activity",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "askMe.emptyTitle",
+    "en": "Nothing needs you right now. 🌿",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentStrip.notePlaceholder",
+    "en": "one line per bullet…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentStrip.oneLineOneBullet",
+    "en": "one line = one bullet · esc to close",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "agentDetail.fullscreenDesc",
+    "en": "This terminal is open in focus mode. Press Esc or exit focus mode to bring it back here.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settingsHero.proCommunityFree",
+    "en": "Community stays free, stays open, and keeps getting updates.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "officeTheme.desc",
+    "en": "Re-skin the pixel office as a TV show. Switching starts a fresh cast.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "officeTheme.startsFreshCast",
+    "en": "STARTS A FRESH CAST",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.eraseEverything",
+    "en": "erase everything & restart",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.changeHome.freshDesc",
+    "en": "Point the harness at the new (empty) folder. Your existing data stays in the old folder, simply unused.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.general.keepAwake",
+    "en": "Keep Mac awake while agents run",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.general.keepAwakeDesc",
+    "en": "Blocks display sleep so schedules and terminals keep firing on time. Costs battery — best on AC.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.general.simpleModeDesc",
+    "en": "Agents brief you in plain language instead of engineering shorthand.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.general.arabicTerminal",
+    "en": "Arabic / RTL text in terminals",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.general.arabicTerminalFollowsLanguage",
+    "en": "Following your app language. Switch it here to override that either way — the choice sticks even if you change language again.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.agentsModels.savedNote",
+    "en": "saved — applies to newly spawned agents",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.agentsModels.maxTurns",
+    "en": "Max turns per run",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.autonomy.autoOn",
+    "en": "Autonomous — agents act without asking",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.autonomy.autoOff",
+    "en": "Ask-first — agents pause for tool approval",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.autonomy.breakerDesc",
+    "en": "Guard against runaway agents and spend. The breaker steers, then constrains, then stops an agent that crosses these.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.memory.crossSessionDesc",
+    "en": "Agents' markdown memory is indexed for instant search. The embedding model lives in the Memory panel.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.memory.kgDesc",
+    "en": "Add your docs, images & PDFs; agents query them on demand via the kg tool.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.showSlackHelp",
+    "en": "Show Slack connect steps",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.signingSecretPlaceholder",
+    "en": "Slack app -> Basic Information -> Signing Secret",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.channelPlaceholder",
+    "en": "C0123... or blank for any",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.proactivePosting",
+    "en": "Proactive posting (app-initiated) — off by default",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.webhooksDesc",
+    "en": "One endpoint per caller, each with its own secret and mode. They all share one server, so another webhook costs nothing.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.endpointPlaceholder",
+    "en": "starts once the webhook server is listening",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.connections.orgKeyPlaceholder",
+    "en": "paste your organisation key",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.voice.freeFlowTitle",
+    "en": "Free Flow (voice dictation)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.voice.freeFlowDesc",
+    "en": "Push-to-talk dictation: speak, and Groq Whisper drops the text into the queue composer.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.voice.groqPlaceholder",
+    "en": "gsk_... (get a free key at console.groq.com)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "settings.voice.keySavedNote",
+    "en": "Key saved — Talk is ready.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.terminalFullscreen",
+    "en": "Terminal is open in fullscreen. Press Esc to bring it back.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.taskFromHuman",
+    "en": "Task from the human",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.engine",
+    "en": "engine:",
+    "es": "engine:",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.textSearch",
+    "en": "TEXT SEARCH (board, tasks, memory)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.textSearchPlaceholder",
+    "en": "Find exact text across hive files…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.boardEmpty",
+    "en": "The board is empty.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "commandCenter.deliveryResumeAria",
+    "en": "Resume automatic delivery for the whole floor",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.hireImported",
+    "en": "hire imported:",
+    "es": "hire imported",
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.reviewFields",
+    "en": "review every field — especially the command — before spawning.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.hireFlags",
+    "en": "⚠️ flags this hire appends to the command:",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.hireSkills",
+    "en": "skills this hire activates:",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.sections.identity.hint",
+    "en": "name · character · color",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.sections.workspace.hint",
+    "en": "folder · isolation · resume",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.sections.engine.hint",
+    "en": "provider · model · command",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.pickProject",
+    "en": "Pick a project, or add a new one:",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.addProjectTitle",
+    "en": "Pick a folder and register it as a project",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.resumeSession",
+    "en": "Resume session ID (optional)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.resumePlaceholder",
+    "en": "paste a Claude session id to continue its conversation",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.ossByok",
+    "en": "Via OSS provider · BYOK",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.byokNote",
+    "en": "BYOK keys & local endpoints for this engine live in Settings → AI Engines. New to local models? Read run on open models or set up on a Mac Mini. Live end-to-end is pending real model calls (verify on-device).",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.runOnOpenModels",
+    "en": "run on open models",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.setUpMacMini",
+    "en": "set up on a Mac Mini",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.commandAuto",
+    "en": "Command (auto mode on)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.goalPlaceholder",
+    "en": "long-running directive injected on every prompt",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.generateWithAI",
+    "en": "generate one with AI…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "addAgent.errFolder",
+    "en": "Pick a folder first",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.titles.persona",
+    "en": "WELCOME TO MUNDER DIFFLIN",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.persona.bodyLocal",
+    "en": " Everything runs on this machine.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.persona.ask",
+    "en": "FIRST — WHO ARE YOU? (we'll tailor the setup)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.persona.nonTechnicalDesc",
+    "en": "I'm in marketing, sales, ops, or just starting out. Explain things in plain language.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.engines.label",
+    "en": "ELEVEN ENGINES, ONE OFFICE",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.engines.desc",
+    "en": "Claude Code, Codex, Grok, Kimi, Antigravity, Qwen, OpenCode, Crush, pi, Copilot & Cursor — live agents on one floor.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.engines.descPlain",
+    "en": "Eleven AI assistants — Claude, Codex, Cursor, Gemini, Grok and more — working side by side in one shared office.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.memory.desc",
+    "en": "Each agent keeps notes, mined into a shared, searchable MemPalace.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.commandCenter.desc",
+    "en": "Terminal · Floor · Memory · Activity · Tasks · Triggers in one control surface.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.welcome.features.commandCenter.descPlain",
+    "en": "One dashboard to watch the work, the agents' memory, tasks, and triggers.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.providerBlurb.claude",
+    "en": "Claude Code — Anthropic",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.providerBlurb.qwen",
+    "en": "Qwen — runs a local Qwen model on your machine",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoLabelPlain",
+    "en": "LET AGENTS WORK ON THEIR OWN",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoLabel",
+    "en": "WORK AUTONOMOUSLY (AUTO MODE)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoOnPlain",
+    "en": "On. Agents carry out tasks without stopping to ask — the smoothest experience.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoOffPlain",
+    "en": "Off. Agents pause and ask you before changing files or running commands.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoOff",
+    "en": "Off. Each agent asks before edits / shell commands (Claude default, codex -a untrusted, …).",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.autoNote",
+    "en": "The right default for the \"control room\" experience; a foot-gun on production repos. Override per agent in the Add Agent dialog.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.reliabilityHead",
+    "en": "KEEP THINGS RUNNING WHILE YOU'RE AWAY",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.keepAwake",
+    "en": "KEEP WORKING WHILE AWAY",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.shareStats",
+    "en": "SHARE ANONYMOUS USAGE STATS",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.permissions.stayAwake",
+    "en": "STAY AWAKE ON POWER (MANUAL)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "onboarding.errPickHome",
+    "en": "Pick a harness home folder first.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gpuError",
+    "en": "The office floor lost its GPU context.\n\nToo many terminals are using the GPU at once.\nClose a few agent terminals, or restart the app, to bring it back.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.water.0",
+    "en": "watering the plants 🌿",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.water.1",
+    "en": "giving the plants a drink",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.water.2",
+    "en": "they grow so fast",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.window.0",
+    "en": "letting some air in 🍃",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.window.1",
+    "en": "a bit of fresh air",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.dispenser.0",
+    "en": "getting some water 💧",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.shelf.0",
+    "en": "checking out the shelf 📚",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.bin.0",
+    "en": "out with the scrap paper 🗑️",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.bin.2",
+    "en": "tidying up a little",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.smoke.0",
+    "en": "the floor runs itself 🚬",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.smoke.2",
+    "en": "thinking big thoughts 🚬",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.errand.smoke.3",
+    "en": "I DECLARE… a break",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.suckUp.2",
+    "en": "great vision as always, boss!",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.suckUp.5",
+    "en": "working hard, boss! 💪",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.suckUp.6",
+    "en": "best boss ever. genuinely.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gossip.2",
+    "en": "'world's best boss' — he bought that mug himself",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gossip.3",
+    "en": "he pinned MY task as his idea",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gossip.4",
+    "en": "the cigar smell, honestly…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gossip.5",
+    "en": "he watered the plant. ONE plant. his own.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.gossip.6",
+    "en": "did you hear him? 'I DECLARE… a break'",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.mugs.brewing",
+    "en": "brewing a fresh one ☕",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "office.activity.looping",
+    "en": "looping — breaker armed",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "setupPanel.checking",
+    "en": "Checking what is installed…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "setupPanel.allReady",
+    "en": "Everything recommended is installed. Individual engines above are optional — set up only the ones you use.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "setupPanel.sections.prerequisites.blurb",
+    "en": "The groundwork everything else builds on.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "setupPanel.sections.memory.blurb",
+    "en": "Meaning-based recall across everything your agents learn.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "aiEngines.providers",
+    "en": "AI ENGINE PROVIDERS (BYOK)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "aiEngines.localEndpoint",
+    "en": "LOCAL ENDPOINT · DEFAULT MODEL (PER ENGINE)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "aiEngines.runningOpenModels",
+    "en": "Running open models? Step-by-step guides:",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "aiEngines.runOnOpenModels",
+    "en": "run Munder Difflin on open models",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "aiEngines.setUpMacMini",
+    "en": "set it up on a Mac Mini",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "mcpDefaults.tiers.safeReadonly",
+    "en": "Safe & Read-Only (on by default)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "realtimeToggle.setItUpNow",
+    "en": "set it up now",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "updatesSection.checkingDetail",
+    "en": "Checking for a newer release…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "updatesSection.latestDetail",
+    "en": "You're already up to date — nothing to install.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "triggersTab.schedulesBlurb",
+    "en": "Run a prompt on a repeating clock.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "triggersTab.webhooksBlurb",
+    "en": "Let an outside system post work in.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "triggersTab.organisationBlurb",
+    "en": "Let a teammate's Munder Difflin message yours.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "orgSection.acceptMessages",
+    "en": "Accept messages from your organisation",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "contextSection.clearBlurb",
+    "en": "Discards the context. Nothing is summarised.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "contextSection.extraFocusHint",
+    "en": "Appended to the provider's compaction command. Empty sends the bare command.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "contextSection.bigWindows",
+    "en": "BAR ON BIG WINDOWS",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "schedulesSection.nothingScheduled",
+    "en": "Nothing is scheduled yet.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "schedulesSection.promptPlaceholder",
+    "en": "Sent word for word on every run.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "webhooksSection.secretHint",
+    "en": "Callers echo this in the x-md-webhook-secret header.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "triggerHistory.emptyOrgTitle",
+    "en": "Nothing here yet, and nothing is broken.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fileEditor.previewTitle",
+    "en": "Rendered preview (of the saved file)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fullscreenTerminal.showAgentList",
+    "en": "Show the agent list",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fullscreenTerminal.hideAgentList",
+    "en": "Hide the agent list — full-width terminal",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fullscreenTerminal.lightTheme",
+    "en": "Switch to the light theme",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fullscreenTerminal.darkTheme",
+    "en": "Switch to the dark theme",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "fullscreenTerminal.exitFullscreen",
+    "en": "Exit focus mode (Esc)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "memoryPanel.openTitle",
+    "en": "Search the shared memory your agents build up",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "memoryPanel.onGettingReady",
+    "en": "On · getting ready…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "memoryPanel.setUpInPrereqs",
+    "en": "set it up in Prerequisites →",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "memoryPanel.plainNotesStill",
+    "en": "Agents still keep plain notes without it.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "skillsTab.searchCatalog",
+    "en": "Search the skills catalog…",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "skillsTab.categoryTitle",
+    "en": "Categories as published by the catalog",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "skillsTab.nothingMatches",
+    "en": "Nothing matches that search.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "skillsTab.shipsWithApp",
+    "en": "ships with the app",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "workersTab.repliesToSlack",
+    "en": "replies to a Slack thread",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "workersTab.workerIdTitle",
+    "en": "worker / PTY id",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "workersTab.idleTitle",
+    "en": "time since last terminal output",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.errLabel",
+    "en": "Give it a label.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.testFailed",
+    "en": "Test failed to run.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.labelHint",
+    "en": "Shown in your list. Id",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.blankKeepsKey",
+    "en": "Leave blank to keep the saved key.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.availableToAll",
+    "en": "✓ Available to all workers",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.addSecretToEnable",
+    "en": "Add a secret and enable to make it available.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.v1Note",
+    "en": "v1 grants every enabled integration to all workers. Per-worker scoping is coming.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "integrations.addFirst",
+    "en": "add your first integration",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "kanban.needsYouTitle",
+    "en": "waiting on YOUR answer — see the ASK ME tab",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "kanban.dismissTitle",
+    "en": "dismiss this task (removes it from the board)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "kanban.awaitingAnswer",
+    "en": "AWAITING YOUR ANSWER — ASK ME TAB",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "queueComposer.heldFloor",
+    "en": "held — delivery paused floor-wide",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "queueComposer.pausedTitle",
+    "en": "Auto-delivery is paused for the whole floor. Resume it in the Command Center, or use \"send now\" on a message below.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "queueComposer.showFull",
+    "en": "Show the full message",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "queueComposer.sendNowTitle",
+    "en": "Deliver this message even though auto-delivery is paused. It moves to the front of the queue and types in as soon as the terminal is free.",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "queueComposer.ffCreateKey",
+    "en": "Create a free key at",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "gitPanes.checkoutTitle",
+    "en": "Check out this commit (detached HEAD)",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "gitPanes.baseTitle",
+    "en": "Base — the branch you're comparing against",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "gitPanes.swapTitle",
+    "en": "Swap base ↔ compare",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "gitPanes.compareTitle",
+    "en": "Compare — the branch whose changes you're viewing",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  },
+  {
+    "key": "imagePreview.fitTitle",
+    "en": "Scale the image down to fit the pane",
+    "es": null,
+    "validation_reason": "No matching pattern or semantic content",
+    "semantic_anchors": {
+      "negated": false,
+      "modality": "NONE",
+      "destructive": false,
+      "is_warning": false,
+      "is_confirmation": false,
+      "conditions": [],
+      "consequences": [],
+      "numbers": [],
+      "units": [],
+      "protected_tokens": [],
+      "technical_terms": [],
+      "slots": []
+    }
+  }
+]
