@@ -364,10 +364,42 @@ result = harness.run({
 
 ### Estado actual
 
-- 1144/1170 frases traducidas (97.8%) en Munder Difflin es.json
-- 0 [NEEDS_REVIEW] — todos los flags anteriores fueron resueltos
-- 26 frases sin traducir son términos técnicos universales (IDE, URL, tokens...)
-- Build verificado sin errores TypeScript
+- `es.json` conserva 1160 valores string y mantiene la misma estructura que
+  `en.json` (47 secciones); JSON válido verificado.
+- Se promovieron 15 mejoras seguras desde el compilador semántico. Quedan 2
+  falsos positivos del detector por `{{project}}` y `slash-command`, ambos
+  tokens técnicos o placeholders, no traducciones pendientes.
+- El candidato completo `es.generated.json` produjo 181 traducciones
+  compiladas y 1 entrada `NEEDS_REVIEW`; no se promovió completo porque varias
+  salidas eran gramaticalmente inferiores al texto existente.
+- Build verificado sin errores TypeScript.
+
+## Semantic Phrase Compiler
+
+El compilador determinista traduce frases completas mediante la secuencia
+`surface → concepts → PhraseIR → locale grammar → target surface → verification`.
+No usa un LLM en el camino de ejecución y falla cerrado con
+`UNKNOWN_PHRASE`, `MISSING_LEXEME`, `UNSUPPORTED_RELATION` o `NEEDS_REVIEW`.
+
+```powershell
+py translation_baseline/generalization_test.py
+py translation_baseline/smoke_v3.py
+py -m pytest -p no:asyncio tests/test_concept_lexicon.py tests/test_phrase_parser.py tests/test_locale_grammar.py tests/test_phrase_compiler.py tests/test_generate_es.py
+```
+
+Resultados medidos tras la expansión del léxico y las reglas genéricas:
+
+| medición | resultado |
+|---|---|
+| conceptos registrados | 585 |
+| generalización en 5 dominios | 34/49 (69%) |
+| tests del compilador y generación | 83/83 PASS |
+| regresión amplia sin WordNet/OMW | 295 PASS, 2 SKIP |
+
+Los tests `test_relex.py`, `test_primitives.py` y `test_lexicon.py` requieren
+instalar WordNet/OMW y se quedan esperando en este host; no se cuentan como
+PASS. La suite completa también necesita excluir `translation_baseline/smoke_test.py`
+porque comparte el nombre de módulo `smoke_test` con `ci/smoke_test.py`.
 
 ## Semantic Phrase Engine
 
