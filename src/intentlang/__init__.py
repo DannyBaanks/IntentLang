@@ -68,6 +68,16 @@ from .lexicon import (
     supported_languages,
     synonyms,
 )
+from .llm_oracle import (
+    CredentialStore,
+    KeyringCredentialStore,
+    LLMOracle,
+    OracleConfig,
+    OracleVerdict,
+    config_from_environment,
+    infer_provider,
+    parse_verdict,
+)
 from .lowering import lower_intent_to_program, lower_text_to_program
 from .malbolge_validator import (
     MalbolgeEvidence,
@@ -75,6 +85,8 @@ from .malbolge_validator import (
     get_malbolge_validator,
     validate_malbolge_pipeline,
 )
+from .meaning_ir import Meaning, MeaningEntity, MeaningProvenance, MeaningRole, validate_meaning
+from .meaning_parser import parse_meaning
 from .normalize import tokens, verb_candidates
 from .oracle import Execution, fingerprint, granularity_controls
 from .parity import (
@@ -112,6 +124,7 @@ from .program import (
 from .propose import ProposalRecord, cache_key, propose, validate
 from .relex import DECLARED_OPERAND_PASSTHROUGH, round_trip
 from .resolve import resolve
+from .sanitize import sanitize
 from .semantic import (
     SemanticCapability,
     SemanticResult,
@@ -157,6 +170,20 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     # malbolge
     "MalbolgeEvidence",
     "MalbolgeValidator",
+    "Meaning",
+    "MeaningEntity",
+    "MeaningProvenance",
+    "MeaningRole",
+    "parse_meaning",
+    "CredentialStore",
+    "KeyringCredentialStore",
+    "LLMOracle",
+    "OracleConfig",
+    "OracleVerdict",
+    "config_from_environment",
+    "infer_provider",
+    "parse_verdict",
+    "sanitize",
     # program
     "Program",
     "ProgramNode",
@@ -179,6 +206,7 @@ __all__ = [  # noqa: RUF022 - grouped by public subsystem for API readability
     "UnsupportedLanguage",
     "ValueType",
     "WordNetSemantic",
+    "validate_meaning",
     "bind",
     "cache_key",
     "check_program",

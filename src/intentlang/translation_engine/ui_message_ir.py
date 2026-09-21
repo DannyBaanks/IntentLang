@@ -27,7 +27,7 @@ from __future__ import annotations
 import json
 import hashlib
 from dataclasses import dataclass, field, asdict
-from typing import Optional
+from typing import Any, Optional
 
 IR_VERSION = "1.0.0"
 
@@ -49,7 +49,7 @@ class UIMessageIR:
     key: str
     section: str
     type: str
-    value: str
+    value: Any
     placeholders: list[str] = field(default_factory=list)
     accelerators: list[str] = field(default_factory=list)
     semantic: Optional[SemanticInvariants] = None
@@ -128,7 +128,9 @@ def build_ir_from_inventory(inventory_path: str) -> list[UIMessageIR]:
 def _infer_semantics(key: str, entry: dict) -> Optional[SemanticInvariants]:
     """Heuristic semantic inference from key name and type."""
     k = key.lower()
-    v = entry.get("value", "").lower()
+    raw_value = entry.get("value", "")
+    v = " ".join(str(item) for item in raw_value).lower() \
+        if isinstance(raw_value, list) else str(raw_value).lower()
     t = entry.get("type", "")
 
     obj = None

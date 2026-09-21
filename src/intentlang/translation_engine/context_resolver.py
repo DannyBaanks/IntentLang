@@ -182,7 +182,9 @@ def enrich_inventory_with_context(inventory_path: str, output_path: str) -> dict
     ambiguous = 0
 
     for key, entry in data["inventory"].items():
-        value = entry.get("value", "")
+        raw_value = entry.get("value", "")
+        value = " ".join(str(item) for item in raw_value) \
+            if isinstance(raw_value, list) else str(raw_value)
         words = value.lower().replace(",", "").replace(".", "").split()
 
         contexts = []

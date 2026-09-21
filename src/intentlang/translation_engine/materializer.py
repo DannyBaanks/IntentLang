@@ -17,7 +17,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 from intentlang.translation_engine.ui_message_ir import UIMessageIR, build_ir_from_inventory
 
@@ -27,7 +27,7 @@ PLACEHOLDER_RE = re.compile(
     r"\{\{[^}]+\}\}"
     r"|\{[^}]+\}"
     r"|%[sd]"
-    r"|%\\(\\w+\\)s"
+    r"|%\(\w+\)s"
 )
 
 
@@ -60,7 +60,7 @@ def _restore_placeholders(text: str, tokens: dict[str, str]) -> str:
 
 
 # ── Accelerator preservation ────────────────────────────────────────
-ACCELERATOR_RE = re.compile(r"&(\\w)")
+ACCELERATOR_RE = re.compile(r"(?<![A-Za-z0-9])&(\w)")
 
 
 def _protect_accelerators(text: str) -> tuple[str, dict[str, str]]:
@@ -81,15 +81,15 @@ def _protect_accelerators(text: str) -> tuple[str, dict[str, str]]:
 
 # ── Technical token preservation ────────────────────────────────────
 TECHNICAL_PATTERNS = [
-    re.compile(r"\\b(?:MCP|OAuth|API|SDK|CLI|SSH|HTTP|HTTPS|URL|JSON|YAML|XML|HTML|CSS|JS|TS)\\b"),
-    re.compile(r"\\b(?:React|Electron|Node|TypeScript|JavaScript|Python|Rust|Go)\\b"),
-    re.compile(r"\\b(?:Git|GitHub|GitLab|npm|npx|yarn|pnpm)\\b"),
-    re.compile(r"\\b(?:OpenAI|Anthropic|Claude|GPT|Gemini|Llama)\\b"),
-    re.compile(r"\\b(?:Docker|Kubernetes|AWS|GCP|Azure)\\b"),
-    re.compile(r"\\b(?:VSCode|VS Code|Cursor|Windsurf)\\b"),
-    re.compile(r"\\b(?:Ada|Munder Difflin|munder-difflin)\\b"),
+    re.compile(r"\b(?:MCP|OAuth|API|SDK|CLI|SSH|HTTP|HTTPS|URL|JSON|YAML|XML|HTML|CSS|JS|TS)\b"),
+    re.compile(r"\b(?:React|Electron|Node|TypeScript|JavaScript|Python|Rust|Go)\b"),
+    re.compile(r"\b(?:Git|GitHub|GitLab|npm|npx|yarn|pnpm)\b"),
+    re.compile(r"\b(?:OpenAI|Anthropic|Claude|GPT|Gemini|Llama)\b"),
+    re.compile(r"\b(?:Docker|Kubernetes|AWS|GCP|Azure)\b"),
+    re.compile(r"\b(?:VSCode|VS Code|Cursor|Windsurf)\b"),
+    re.compile(r"\b(?:Ada|Munder Difflin|munder-difflin|Slack|Grok|Kimi|Antigravity|Copilot|Cline|OpenClaw|Tauri|Vite|Pixi\.js|xterm\.js|OpenTelemetry|Whisper)\b"),
     re.compile(r"/[a-z]+"),  # slash commands
-    re.compile(r"\\bV\\d+\\.\\d+\\.\\d+"),  # version strings
+    re.compile(r"\bV\d+\.\d+\.\d+"),  # version strings
 ]
 
 
@@ -256,7 +256,7 @@ def materialize_single(
     msg: UIMessageIR,
     target_lang: str,
     dictionary: Optional[dict] = None,
-) -> str:
+) -> Any:
     """Translate a single IR message to a target language.
 
     Strategy:
@@ -269,7 +269,18 @@ def materialize_single(
     if msg.passthrough:
         return msg.value
 
-    text = msg.value
+    if isinstance(msg.value, list):
+        return [
+            _materialize_text(item, target_lang, msg.section)
+            if isinstance(item, str) else item
+            for item in msg.value
+        ]
+
+    return _materialize_text(msg.value, target_lang, msg.section)
+
+
+def _materialize_text(text: str, target_lang: str, section: str) -> str:
+    """Materialize one scalar while preserving its protected tokens."""
     words = text.strip().split()
     word_count = len(words)
 
@@ -281,10 +292,13 @@ def materialize_single(
     # Phase 2: decide strategy by length
     if word_count == 1:
         # Single word — dictionary lookup
-        result = _translate_word(words[0].lower(), target_lang, msg.section)
+        # Keep the original spelling when the dictionary has no entry. Passing
+        # a lower-cased word here silently changed proper nouns such as Slack
+        # into "slack" in generated locales.
+        result = _translate_word(words[0], target_lang, section)
     elif word_count <= 3:
         # Short phrase — word-by-word with dictionary
-        result = _translate_phrase(protected, target_lang, msg.section)
+        result = _translate_phrase(protected, target_lang, section)
     else:
         # Long phrase — needs human/LLM review
         result = "[NEEDS_REVIEW] " + text
@@ -309,14 +323,16 @@ def _translate_phrase(text: str, target_lang: str, section: str) -> str:
             continue
 
         # Skip pure punctuation / whitespace
-        stripped = word.strip(".,;:!?()[]{}'\"-")
+        stripped = word.strip(".,;:!?()[]{}'\"-…")
         if not stripped:
             translated_words.append(word)
             continue
 
         # Translate
         translated = _translate_word(stripped, target_lang, section)
-        translated_words.append(translated)
+        prefix = word[:len(word) - len(word.lstrip(".,;:!?()[]{}'\"-…"))]
+        suffix = word[len(word.rstrip(".,;:!?()[]{}'\"-…")):]
+        translated_words.append(prefix + translated + suffix)
 
     return " ".join(translated_words)
 

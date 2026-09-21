@@ -8,6 +8,7 @@ que despues corre solo como regresion.
 from __future__ import annotations
 
 import argparse
+import getpass
 import json
 import sys
 from datetime import datetime, timezone
@@ -17,6 +18,13 @@ from engine_lang.registry import registry
 
 from .discovery import discover
 from .executor import execute_program
+from .llm_oracle import (
+    DEFAULT_GEMINI_MODEL,
+    DEFAULT_OPENAI_MODEL,
+    KeyringCredentialStore,
+    OracleConfig,
+    infer_provider,
+)
 from .lowering import lower_text_to_program
 from .relex import round_trip
 from .resolve import resolve
@@ -89,6 +97,12 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("list-judgments", help="listar juicios pendientes")
 
+    oc = sub.add_parser("oracle-config", help="configurar el oraculo LLM localmente")
+    oc.add_argument("--provider", choices=["auto", "gemini", "openai-compatible"], default="auto")
+    oc.add_argument("--model", help="modelo; si se omite se usa el recomendado del proveedor")
+    oc.add_argument("--google-search", action="store_true", help="activar grounding con Google Search en Gemini")
+    sub.add_parser("oracle-status", help="mostrar proveedor/modelo configurado sin revelar la clave")
+
     # execute: resolve -> lower -> execute capabilities
     x = sub.add_parser("execute", help="resolver + ejecutar capabilities")
     x.add_argument("text")
@@ -138,6 +152,37 @@ def main(argv: list[str] | None = None) -> int:
     if args.cmd == "list-judgments":
         for judgment in list_judgments():
             print(json.dumps(judgment, ensure_ascii=False))
+        return 0
+
+    if args.cmd == "oracle-config":
+        api_key = getpass.getpass("API key del proveedor (no se mostrara): ").strip()
+        if not api_key:
+            print("No se guardo: la clave esta vacia", file=sys.stderr)
+            return 2
+        provider = infer_provider(api_key, None if args.provider == "auto" else args.provider)
+        default_model = DEFAULT_GEMINI_MODEL if provider == "gemini" else DEFAULT_OPENAI_MODEL
+        KeyringCredentialStore().save(OracleConfig(
+            provider=provider,
+            api_key=api_key,
+            model=args.model or default_model,
+            google_search=args.google_search,
+        ))
+        print(f"Oraculo configurado localmente: {provider}, modelo {args.model or default_model}")
+        print("La clave no se imprime ni se envia hasta ejecutar una verificacion.")
+        return 0
+
+    if args.cmd == "oracle-status":
+        try:
+            config = KeyringCredentialStore().load()
+        except (FileNotFoundError, json.JSONDecodeError) as exc:
+            print(f"Oraculo no configurado: {exc}", file=sys.stderr)
+            return 1
+        print(json.dumps({
+            "provider": config.provider,
+            "model": config.model,
+            "google_search": config.google_search,
+            "credentials_location": "OS keyring (intentlang/oracle)",
+        }, ensure_ascii=False, indent=2))
         return 0
 
     if args.cmd == "promote":

@@ -29,7 +29,7 @@ PLACEHOLDER_RE = re.compile(
 
 # Keyboard accelerators: &x (GTK), _x (Qt), Ctrl+X, Cmd+X
 ACCELERATOR_RE = re.compile(
-    r"&[a-zA-Z]"         # &S (save)
+    r"(?<![A-Za-z0-9])&[a-zA-Z]"  # &S (save), not the ampersand in Q&A
     r"|_[a-zA-Z]"        # _S (save)
     r"|Ctrl\+[a-zA-Z]"   # Ctrl+S
     r"|Cmd\+[a-zA-Z]"    # Cmd+S
@@ -54,9 +54,12 @@ TECHNICAL_TOKENS = {
     "SQLite", "PostgreSQL", "MySQL", "Redis", "MongoDB",
     "Docker", "Kubernetes", "AWS", "GCP", "Azure",
     "Markdown", "LaTeX", "PDF", "PNG", "JPG", "SVG",
-    "USB", "TLS", "SSL", "SSH", "DNS", "TCP", "UDP",
+    "USB", "TLS", "SSL", "SSH", "DNS", "TCP", "UDP", "USD", "REV",
+    "IMG", "DIFF",
     "IDE", "LSP", "DAP", "AST", "IR", " REPL",
-    "Ada", "Munder Difflin", "munder-difflin",
+    "Ada", "Munder Difflin", "munder-difflin", "Slack", "Grok", "Kimi",
+    "Antigravity", "Copilot", "Cline", "OpenClaw", "Tauri", "Vite",
+    "Pixi.js", "xterm.js", "OpenTelemetry", "Whisper",
     "/skill", "/help",
 }
 
@@ -117,9 +120,16 @@ SECTION_TYPE_MAP = {
 }
 
 
-def classify_string(value: str, section: str, key: str) -> str:
+def _text_for_classification(value: Any) -> str:
+    """Return a scalar view without changing the value stored in the IR."""
+    if isinstance(value, list):
+        return " ".join(str(item) for item in value)
+    return str(value)
+
+
+def classify_string(value: Any, section: str, key: str) -> str:
     """Classify a UI string by its semantic type."""
-    v = value.strip()
+    v = _text_for_classification(value).strip()
 
     # Empty or whitespace only
     if not v:
@@ -154,23 +164,36 @@ def classify_string(value: str, section: str, key: str) -> str:
     return "unknown"
 
 
-def extract_placeholders(value: str) -> list[str]:
+def extract_placeholders(value: Any) -> list[str]:
     """Extract all placeholder tokens from a string."""
-    return PLACEHOLDER_RE.findall(value)
+    if isinstance(value, list):
+        out = []
+        for item in value:
+            out.extend(extract_placeholders(item))
+        return out
+    return PLACEHOLDER_RE.findall(str(value))
 
 
-def extract_accelerators(value: str) -> list[str]:
+def extract_accelerators(value: Any) -> list[str]:
     """Extract keyboard accelerator tokens."""
-    return ACCELERATOR_RE.findall(value)
+    if isinstance(value, list):
+        out = []
+        for item in value:
+            out.extend(extract_accelerators(item))
+        return out
+    return ACCELERATOR_RE.findall(str(value))
 
 
-def is_technical(value: str, section: str, key: str) -> bool:
+def is_technical(value: Any, section: str, key: str) -> bool:
     """Check if a string is a technical token that should not be translated.
 
     Conservative: only skip if the VALUE itself is technical, not just the key name.
     A key named 'tokenLimit' can have a translatable value like 'limit {{value}}'.
     """
-    v = value.strip()
+    if isinstance(value, list):
+        return bool(value) and all(is_technical(item, section, key) for item in value)
+
+    v = str(value).strip()
 
     # Exact match in known technical tokens
     if v in TECHNICAL_TOKENS:
@@ -192,10 +215,6 @@ def is_technical(value: str, section: str, key: str) -> bool:
     if v in TECHNICAL_TOKENS:
         return True
 
-    # Abbreviations (all caps, <=5 chars)
-    if v.isupper() and len(v) <= 5 and v.replace(" ", "").isalpha():
-        return True
-
     # Greek letters / symbols used in UI (Σ, ·, etc.) — these are decorative
     if len(v) <= 2 and not v.isascii():
         return True
@@ -203,8 +222,10 @@ def is_technical(value: str, section: str, key: str) -> bool:
     return False
 
 
-def is_brand(value: str) -> bool:
+def is_brand(value: Any) -> bool:
     """Check if a string is a brand name."""
+    if isinstance(value, list):
+        return False
     v = value.strip()
     return bool(BRAND_PATTERNS.match(v))
 
@@ -239,7 +260,10 @@ def flatten_locale(data: dict, parent_key: str = "") -> list[dict]:
         else:
             items.append({
                 "key": full_key,
-                "value": str(v),
+                # Preserve arrays as arrays. Munder Difflin indexes these
+                # values through i18next paths, and changing them to a string
+                # silently breaks locale shape and array-length checks.
+                "value": v,
                 "section": section,
             })
     return items
@@ -280,10 +304,10 @@ def build_inventory(source_path: str) -> dict:
         elif brand:
             translatable = False
             skip_reason = "brand_name"
-        elif not value.strip():
+        elif (not value if isinstance(value, list) else not str(value).strip()):
             translatable = False
             skip_reason = "empty_string"
-        elif value.strip() in ("/", ".", "..", "~"):
+        elif isinstance(value, str) and value.strip() in ("/", ".", "..", "~"):
             translatable = False
             skip_reason = "path_separator"
 
@@ -293,7 +317,7 @@ def build_inventory(source_path: str) -> dict:
             "type": str_type,
             "placeholders": placeholders,
             "accelerators": accelerators,
-            "length": len(value),
+            "length": sum(len(str(v)) for v in value) if isinstance(value, list) else len(str(value)),
             "translatable": translatable,
             "skip_reason": skip_reason,
         }

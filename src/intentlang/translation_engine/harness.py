@@ -138,19 +138,30 @@ def run_harness(
         rt_result.checked, rt_result.passed, rt_result.failed,
         rt_result.pass_rate * 100))
 
-    # Write report
+    # Overall status
+    all_ok = all(s["status"] == "OK" for s in results["steps"].values())
+    results["overall_status"] = "PASS" if all_ok else "FAIL"
+
+    # Report paths and payload must be finalized before either report is
+    # serialized. Previously overall_status was added after the JSON report was
+    # written, so callers received PASS while the persisted evidence omitted it.
     report_path = str(output / "harness_report.json")
+    readable_path = str(output / "HARNESS_REPORT.md")
+    results["report"] = report_path
+    results["readable_report"] = readable_path
+
+    # Write report
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
     # Write human-readable report
-    readable_path = str(output / "HARNESS_REPORT.md")
     with open(readable_path, "w", encoding="utf-8") as f:
         f.write("# i18n Harness Report\n\n")
         f.write("**Timestamp:** %s\n" % results["timestamp"])
         f.write("**Source:** %s\n" % source_path)
         f.write("**Target:** %s\n" % target_lang)
-        f.write("**IR Version:** %s\n\n" % IR_VERSION)
+        f.write("**IR Version:** %s\n" % IR_VERSION)
+        f.write("**Overall:** %s\n\n" % results["overall_status"])
 
         for step, info in sorted(results["steps"].items()):
             status = info.get("status", "UNKNOWN")
@@ -168,13 +179,6 @@ def run_harness(
                     m.key, m.field, m.source_value, m.target_value))
             if len(rt_result.mismatches) > 20:
                 f.write("- ... and %d more\n" % (len(rt_result.mismatches) - 20))
-
-    results["report"] = report_path
-    results["readable_report"] = readable_path
-
-    # Overall status
-    all_ok = all(s["status"] == "OK" for s in results["steps"].values())
-    results["overall_status"] = "PASS" if all_ok else "FAIL"
 
     print("\n=== Overall: %s ===" % results["overall_status"])
     print("Report: %s" % report_path)

@@ -1,509 +1,282 @@
-# intent-lang
+# IntentLang
 
-> Un lenguaje donde el lenguaje natural es una **representación superficial** de la intención, no la intención misma.
+## Traduce lo que significa, no solamente lo que dice
 
-```
-"agrega cuerpo"    "add body"    "添加身体"    "ajoute le corps"
-```
+IntentLang es un motor de traducción semántica. Su objetivo es que una idea
+conserve el mismo significado aunque cambie el idioma, la redacción o el
+formato del texto.
 
-No son cuatro instrucciones. Son cuatro formas de expresar la misma intención canónica.
-
-**Estado: núcleo implementado** — 8 language packs locales y 44 primitivas de runtime. Este README es el tour; [`DESIGN.md`](DESIGN.md) es la especificación.
-
-```powershell
-py -m intentlang resolve "agrégale cuerpo" --lang es
-py -m intentlang judge "agrégale cuerpo" --lang es  # -> judgments.jsonl
-py -m intentlang execute "copia el archivo" --lang es   # resolve + lower -> Program IR
-```
-
-## Interfaz web
-
-La consola web muestra la entrada humana y el `Intent IR` en dos paneles. La
-publicación de GitHub Pages y Docker es una demo estática; no ejecuta
-capabilities ni resuelve texto arbitrario sin el servidor Python local.
-
-```powershell
-py web/server.py
-```
-
-Abre `http://127.0.0.1:8765`.
-
-Para levantar la demo estática con Docker:
-
-```powershell
-docker compose up -d
-```
-
-Abre `http://127.0.0.1:8080`.
-
-La demo publicada por GitHub Pages estará en
-`https://dannybaanks.github.io/intent-lang/` después de ejecutar el workflow de
-publicación.
-
-## La Idea
-
-Es más fácil pensar en el idioma que ya dominas que en uno aprendido. Casi todos los lenguajes de programación tienen keywords en inglés, y esa es una capa de fricción entre humano y máquina que nadie eligió.
-
-La propuesta no es "programa en tu idioma" — eso ya existe (Scratch lo hace en 70+ idiomas) y cualquier LLM traduce intención a código. La propuesta es más estrecha y por eso más interesante:
-
-> **Lenguaje natural como método de entrada a un núcleo diminuto y verificable, donde la ambigüedad no se adivina y el round-trip te muestra lo que se entendió.**
-
-Si el núcleo es pequeño, la traducción deja de ser un problema abierto y se vuelve verificable.
-
-## Qué Lo Hace Distinto
-
-**El diccionario no basta, y el diseño lo asume.** Para "agrega cuerpo", un diccionario confirma que `agregar` significa add. No puede decir si `cuerpo` es un cuerpo físico o un campo `body`. Por eso hay **dos autoridades**: el léxico autoriza que una palabra existe y en qué sentido; una tabla finita y auditable autoriza qué intenciones existen.
-
-**El modelo propone, el léxico decide.** Cuando el léxico falla, un LLM propone lemas candidatos — y esos candidatos vuelven al léxico para validación. Una propuesta que no existe en el diccionario se rechaza sin apelación. "Significado no inventado" es estructural, no una promesa.
-
-**La ambigüedad es un estado, no un error.** Cuatro estados, solo uno actúa:
-
-```
-RESOLVED     verbo y operando únicos             → único que puede actuar
-AMBIGUOUS    >1 candidato sobrevivió validación   → preguntar
-UNKNOWN      no está en léxico, o no mapea       → no actúa
-INCOMPLETE   verbo sí, operando requerido falta  → pedir lo que falta
-```
-
-**El round-trip es un test, no decoración.** El sistema devuelve lo que entendió usando una palabra **distinta** del mismo synset:
-
-```
-escribes   "agrégale cuerpo"
-sistema    "Entendí: AÑADIR (cuerpo). ¿Correcto?"
-                      └── otra palabra del MISMO synset
-```
-
-Si devuelve tu palabra exacta, la capa semántica no corrió y estás viendo un passthrough de strings. Hay un test que verifica esto.
-
-## Sobre la RAE
-
-La primera versión de esta idea pedía "cumplimiento estricto RAE". No funciona: el DLE es un diccionario de definiciones en prosa para humanos, sin identificadores de sentido estables ni API.
-
-Lo que el diseño necesitaba — equivalencia de **conceptos**, no palabras — ya existe con otro nombre: un **índice interlingual**. WordNet + Open Multilingual WordNet enlazan sentidos entre docenas de idiomas al mismo ID de concepto.
-
-```
-es "agregar" ──┐
-en "add"     ──┼──►  mismo ID ILI, sin idioma
-zh "添加"     ──┘
-```
-
-Y da una propiedad gratis: los synsets **ya son clases de paráfrasis**. `agregar / añadir / sumar / incorporar` comparten synset, así que convergen sin que intervenga ningún modelo.
-
-## Cómo Sabemos Que Funciona
-
-```
-separación      AUTOMÁTICA, debe ser 100%    dos intenciones distintas
-                                               nunca comparten representación
-convergencia    MEDIDA, reportada              no re-test
-round-trip      HUMANO                         la barra de éxito
-```
-
-La convergencia sola es métrica trampa: un sistema que mapea todo a `ADD` converge perfecto e inútil. El fallo peligroso no es que dos paráfrasis no converjan — es que dos intenciones **distintas** colapsen a la misma representación. Por eso separación es la única que puede romper el build.
-
-### Alcance actual
-
-El núcleo conserva las 8 primitivas semánticas de la primera versión y ahora
-incluye 8 packs locales (`es`, `en`, `zh`, `ja`, `ar`, `fi`, `he`, `tr`), 44
-primitivas de runtime, Program IR, capabilities y tabla de dominio. Chino,
-japonés, árabe, finés y hebreo sirven como pruebas de cobertura
-interlingüística; sus gaps se reportan, no se rellenan con adivinanzas. Turco
-es todavía un placeholder porque `omw-tr:1.4` no está disponible en OMW.
-
-## Engine-lang (framework de extensibilidad)
-
-Los idiomas son **plugins de datos YAML** para **estrategias de normalización soportadas** (simplemma, jieba, fugashi, kiwi, pymorphy3, regex). Nueva morfología = cambio en core.
-
-```
-engine_lang/
-  languages/*.yaml       # 8 packs (es, en, zh, ja, ar, fi, he, tr)
-  contracts/language.v1.json
-  verifier.py            # wordnet + tokenizer + check semántico corpus
-  installer.py           # remote registry download + validate
-  cli.py                 # engine-lang install/verify/list/validate/remote
-```
-
-```powershell
-engine-lang list              # idiomas instalados + estado
-engine-lang verify            # exit 1 en cualquier FAIL
-engine-lang install he        # download + validate + wordnet check
-```
-
-## Intent Program IR
-
-3 familias de primitivas composables (44 primitivas de runtime):
-
-```
-EFECTOS (side effects):     COPY MOVE REMOVE RUN QUERY CHANGE ADD CONNECT
-                            DOWNLOAD COMPILE RENDER SIGN WRITE READ DELETE ...
-
-DATOS (transformación):     VALUE BIND LOAD STORE COMPARE MAP FILTER
-                            COLLECT REDUCE PROJECT JOIN SORT GROUP
-
-CONTROL (flujo):            SEQUENCE IF LOOP CALL RETURN MATCH ASSERT TRY
-                            PARALLEL FOREACH
-```
-
-Para composición compleja existe una capa estructurada JSON separada del
-lenguaje natural. Convierte pasos y referencias en Program IR, comprueba
-entradas requeridas y tipos escalares, genera un plan de efectos y exige
-confirmación antes de ejecutar efectos:
-
-```python
-from intentlang import plan_program, parse_structured, run_structured
-
-source = '{"steps":[{"call":"cap.fs.write","inputs":{"path":"out.txt","content":"ok"}}]}'
-plan = plan_program(parse_structured(source))
-# plan.requires_confirmation is True
-plan, result = run_structured(source, confirmed=True)
-```
-
-La capa estructurada admite `sequence`, `let`, `if/else`, `foreach` y
-`compare`, además de referencias a bindings. El mismo Program IR genera un
-programa completo para C y Java, con helpers reales para `WRITE`, `COPY`,
-`MOVE`, `DELETE` y `RUN`; los smoke tests los compilan cuando sus toolchains
-están disponibles. Los templates individuales también cubren `READ`.
-
-Pipeline:
-```
-texto natural
-      ↓ resolve (lexicon)
-Intent IR (RESOLVED)
-      ↓ lowering (primitive -> capability)
-Program IR (árbol de primitivas)
-      ↓ execute (capability registry)
-EJECUCIÓN + EVIDENCIA
-```
-
-## Capability Registry
-
-21 capabilities con contrato (JSON Schema + pre/postconditions + side effects declarados):
-
-```powershell
-cap.fs.copy     cap.fs.move    cap.fs.delete   cap.fs.write
-cap.fs.read     cap.process.run  cap.net.connect  cap.net.download
-```
-
-```python
-execute_capability("cap.fs.copy", {"src": "a.txt", "dst": "b.txt"})
-# {"copied": True, "src": "a.txt", "dst": "b.txt"}
-```
-
-## Discovery Engine
+> Si una traducción cambia quién hizo algo, qué ocurrió, cuándo ocurrió o si
+> ocurrió, IntentLang debe detectarlo.
 
 ```text
-UNKNOWN surface
-      ↓
-enumerate_candidates (lexicon + verb_candidates)
-      ↓
-verify_candidate (test cases -> execute_capability)
-      ↓
-register_primitive (registro en memoria)
+Alice saw the rabbit
+        ↓
+   mismo significado
+        ↓
+Alicia vio al conejo
+アリスはウサギを見た
+爱丽丝看见了兔子
 ```
 
-```python
-discover(surface, lang, test_cases)
-# -> Candidate(...) si un candidato existe y pasa sus casos de prueba
+No se trata de sustituir palabras una por una. Primero se representa el
+significado de la frase y después se genera la forma adecuada para cada idioma.
+
+## ¿Para quién es?
+
+Para personas que necesitan traducir contenido importante sin tener que
+confiar ciegamente en que una frase “suena bien”:
+
+- libros y textos narrativos;
+- documentación y manuales;
+- interfaces de aplicaciones;
+- instrucciones y procedimientos;
+- textos donde la negación, el tiempo o los participantes importan.
+
+También sirve para equipos técnicos que quieran una traducción auditable, pero
+no necesitas saber programar para entender la idea o usar las herramientas
+básicas.
+
+## El problema que intenta resolver
+
+Una traducción puede parecer correcta y aun así cambiar el significado:
+
+```text
+Alice pushed the rabbit
+Alice was pushed by the rabbit
 ```
 
-## COBOL
+Las dos frases hablan de Alice y del conejo, pero intercambian quién empujó a
+quién. Un traductor basado únicamente en palabras puede pasar por alto ese
+cambio.
 
-El backend COBOL genera fuente compatible con GnuCOBOL para `WRITE`, `READ`,
-`RUN`, `COPY`, `MOVE` y `DELETE`. También cubre secuencias, `IF/ELSE`,
-`FOREACH` sobre listas literales, `TRY`, `RETURN`, funciones estructuradas y
-transacciones con rutas explícitas. Las capabilities fuera de esta lista se
-mantienen como hooks no habilitados. La compilación requiere `cobc` instalado.
+IntentLang comprueba, entre otras cosas:
 
-`verify_cobol_round_trip` recupera capabilities e inputs literales de programas
-lineales generados y los compara con el `Program IR` original. Antes de aceptar
-el resultado valida los inputs contra los contratos registrados. Si encuentra
-una mutación, una sentencia extra o una construcción que no reconoce, devuelve
-rechazo o `NOT_SUPPORTED`.
+- quién realiza la acción;
+- quién o qué recibe la acción;
+- negación y afirmación;
+- tiempo verbal;
+- aspecto: acción terminada, progresiva o iniciada;
+- modalidad: obligación, posibilidad o imperativo;
+- cantidades y cuantificadores;
+- lugares, objetos y relaciones entre entidades.
 
-En `READ`, el renderer declara un registro variable con un buffer máximo de
-`8192` bytes y obtiene la longitud mediante `WS-INPUT-SIZE`. El límite de la
-capability es `4096` bytes. El test correspondiente usa un registro de `4097`
-bytes y comprueba que el ejecutable termina con código `99` sin procesarlo.
-Esta comprobación corresponde a ese layout; otros layouts COBOL necesitan
-pruebas específicas.
+Cuando no sabe algo, debe decirlo. `UNKNOWN` es un resultado válido; inventar
+un significado no lo es.
 
-## Instalación autónoma
+## Cómo funciona
 
-Requisito: Python 3.12 o posterior.
+```text
+Texto original
+      ↓
+Significado independiente del idioma
+      ↓
+Traducción al idioma destino
+      ↓
+Volver a analizar la traducción
+      ↓
+¿Sigue siendo el mismo significado?
+```
+
+La pieza central se llama `Meaning IR`: una representación del significado que
+no depende de si el texto viene de un libro, un PDF, una interfaz o una base de
+datos.
+
+El formato original solo importa para extraer el texto. La traducción se juzga
+por el significado.
+
+## Resultado actual
+
+El experimento inicial usa un corpus multilingüe basado en frases de *Alice's
+Adventures in Wonderland* y casos sintéticos diseñados para probar fenómenos
+concretos.
+
+| Medición | Resultado |
+|---|---:|
+| Frases evaluadas | 100 |
+| Idiomas | 4 |
+| Variantes comprobadas | 400 |
+| Variantes semánticamente correctas | 396 |
+| Casos correctamente rechazados como desconocidos | 4 |
+| Exactitud bruta | **99%** |
+| Exactitud en casos que debían resolverse | **100%** |
+
+Los idiomas actuales del experimento son inglés, español, japonés y chino.
+
+Las cuatro variantes desconocidas contienen un verbo inventado —“blorps”,
+“blorpea” y equivalentes—. IntentLang no intentó adivinar qué significan. Eso
+es una victoria de seguridad, no un fallo de traducción.
+
+Importante: este resultado todavía corresponde a un corpus controlado, no a la
+traducción completa de un libro. El siguiente reto es ampliar el corpus con
+capítulos, diálogos, referencias largas y ambigüedad narrativa.
+
+## ¿Usa inteligencia artificial?
+
+Puede hacerlo, pero no es obligatorio.
+
+El camino principal intenta resolver y verificar de forma determinista. Un LLM
+puede funcionar como un oráculo externo para revisar casos difíciles, pero no
+es la autoridad final ni puede inventar el significado del sistema.
+
+```text
+IntentLang decide el significado
+             ↓
+LLM revisa una traducción difícil
+             ↓
+IntentLang compara la respuesta contra Meaning IR
+```
+
+El LLM debe devolver un veredicto mínimo, por ejemplo:
+
+```json
+{
+  "verdict": "PASS",
+  "changed_features": [],
+  "reason": null,
+  "confidence": 0.96
+}
+```
+
+Se pueden usar Gemini y proveedores compatibles con la API de OpenAI. La
+configuración intenta detectar el proveedor automáticamente y usa sus
+endpoints conocidos sin pedirle al usuario que configure URLs técnicas.
+
+## Privacidad de las API keys
+
+La clave se guarda por defecto en el almacén seguro del sistema operativo:
+
+- Windows: Credential Manager;
+- macOS: Keychain;
+- Linux: Secret Service/keyring.
+
+IntentLang no guarda la clave en el repositorio, `.env`, el virtualenv, los
+logs ni los reportes. También elimina patrones conocidos de claves antes de
+enviar prompts o errores fuera del proceso.
+
+Configurar el oráculo:
+
+```bash
+python -m pip install -e '.[security]'
+intentlang oracle-config
+intentlang oracle-status
+```
+
+Para CI o automatizaciones se puede usar `INTENTLANG_ORACLE_API_KEY`. Los
+proveedores OpenAI-compatible poco comunes pueden necesitar un preset o una
+URL específica; no existe una forma fiable de deducir cualquier endpoint solo
+a partir de una clave.
+
+## Cómo probarlo
+
+### Linux y macOS
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -e .
+```
 
 ### Windows
 
 ```powershell
 py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e ".[dev]"
-cobc --version
-.\.venv\Scripts\python.exe -m pytest -q
-ruff check src/ tests/
-mypy src/intentlang --ignore-missing-imports
+.venv\Scripts\python.exe -m pip install -e .
 ```
 
-Instala GnuCOBOL mediante una distribución pública de MSYS2 y añade su
-directorio `bin` al `PATH` antes de ejecutar `cobc --version`. Intent Lang no
-descarga ni contiene el compilador.
+El virtualenv solo aísla las dependencias. No es un almacén de secretos.
 
-### Linux
+El experimento semántico reproducible necesita los datos locales de WordNet:
 
 ```bash
-python3.12 -m venv .venv
-.venv/bin/python -m pip install -e '.[dev]'
-sudo apt update
-sudo apt install gnucobol
-cobc --version
-.venv/bin/python -m pytest -q
-ruff check src/ tests/
-mypy src/intentlang --ignore-missing-imports
+python3 ci/download_wordnets.py --data-dir /tmp/intentlang-wn-data
+WN_DATA_DIR=/tmp/intentlang-wn-data PYTHONPATH=src \
+  python3 ci/run_semantic_benchmark.py \
+  --output-dir /tmp/intentlang-benchmark
 ```
 
-En Fedora usa `sudo dnf install gnucobol`; en Arch usa `sudo pacman -S
-gnucobol`. Intent Lang no descarga ni contiene el compilador.
+La suite completa se ejecuta así:
 
-Para validar generación COBOL, crea un `Program IR`, genera la fuente con
-`generate_program_source(program, "cobol")`, compílala con `cobc -x` y ejecuta
-el binario resultante. Las capabilities que siguen siendo hooks no deben
-describirse como verificadas.
-
-## Estado medido (2026-08-28; oráculo 2026-08-30)
-
-| métrica | valor | nota |
-|---|---|---|
-| separación | **100%** | invariante que rompe el build, cero colisiones entre casos RESOLVED etiquetados |
-| determinismo (strict) | igualdad de objeto mismo-proceso | byte-idéntico cross-process **NOT_DEMONSTRATED** |
-| convergencia (por ILI) | **0/3 grupos (0%)** | medido por la suite actual, reportado, no disfrazado — ver abajo |
-| paridad (oráculo ejecutivo) | **3/3 grupos (100%)** | misma huella SHA-256 en oráculo simbólico Y en fs real; controles de granularidad OK |
-| domain table con evidencia | 6 VERIFIED / 0 REJECTED / 12 NOT_DEMONSTRATED | `prove` sha256 `c55c11b4…`; ver sección del oráculo |
-| fix cobertura verbo | `duplicar` → COPY | i34961/i30414 verificado contra omw-es+en |
-| round-trip idioma objetivo completo | **NOT_DEMONSTRATED** | mensajes de envoltorio (Entendí/¿Correcto?) siguen en español; relexicalización de concepto funciona |
-| caché firmado asistido | **IMPLEMENTED (API)** | caché persistente local con `evidence_sha256` y firma SHA-256; `get_or_compute` conserva una IR mínima de la propuesta |
-| translation engine (UI i18n) | **97.8% coverage** | 1144/1170 frases en es.json; 778 traducidas en una sesión; 0 [NEEDS_REVIEW]; build verificado |
-| semantic phrase engine | **54 tests PASS** | 8 frames, 7 roles, 1195/1203 válidas (99.3%); léxico curado |
-
-**Por qué 0% convergencia es honesto:** en omw-*:1.4, `archivo`(es), `file`(en) y `文件`(zh) no comparten **ningún** ILI (es tiene i50132/i71104 = sentidos *archive*; el ILI de archivo-informático i70665 existe solo en en/zh). La suite documenta esto como gap léxico conocido — arreglarlo requiere un wordnet español mejor o una tabla de dominio explícita, no adivinanza silenciosa.
-
-## Oráculo de paridad semántica
-
-La convergencia por ILI mide la salud del lexicón. La paridad por oráculo
-mide lo que el sistema **demuestra ejecutando**: cada superficie pasa por dos
-oráculos — la máquina simbólica de `oracle.py` y el filesystem real
-(`cap.fs.*` en tmpdir) — y la paridad exige que **ambas** huellas SHA-256 del
-estado resultante coincidan. La DOMAIN_TABLE es la hipótesis bajo prueba, no
-una verdad afirmada: sin hipótesis no hay instanciación, y los gaps se
-reportan, no se rellenan.
-
-```powershell
-py -m intentlang.parity corpus   # paridad del corpus: 3/3 grupos VERIFIED
-py -m intentlang.parity prove    # evidencia de la tabla -> data/domain_oracle_proofs.json + sha256
+```bash
+WN_DATA_DIR=/tmp/intentlang-wn-data \
+PYTHONPATH=/tmp/intentlang-deps:src \
+pytest -q -p no:cacheprovider
 ```
 
-Lo primero que el oráculo encontró al medir la tabla: la fila `move`
-afirmaba ar `نقل` como equivalente, pero su ejecución resolvía a COPY por
-ILI (huella distinta) → fila REJECTED. El matiz posterior: `move.ar` quedó
-en `حرك` (que el propio corpus seed ya usaba) y `نقل` no se borró en
-silencio — quedó en `DOMAIN_COLLISIONS` con su evidencia, y un test impide
-que reaparezca en la fila sin un acto deliberado. La fila hoy es VERIFIED.
+## Demo visual
 
-Controles obligatorios: las huellas de ADD/COPY/MOVE/REMOVE sobre el mismo
-símbolo deben ser todas distintas (granularidad); si colapsasen, la medición
-entera sería trampa y el test lo grita. Superficies no resolubles o sin
-hipótesis quedan `NOT_RESOLVED`/`NOT_INSTANTIABLE` y se listan como gaps.
+IntentLang incluye una consola web local para ver la entrada y el significado
+que el sistema entendió:
 
-El CLI además desglosa por escritura (`latin/cjk/arabic/…`) como
-**diagnóstico**: dice dónde duele (tokenizer, alfabeto, semántica). Lo que
-nunca hace es sustituir el veredicto global: un tier que converge no hace
-VERIFIED a nada, y el global se imprime siempre al lado. Medir solo los
-idiomas fáciles y callarse el resto sería exactamente la métrica trampa que
-este repo se prohibió.
-
-## Translation Engine (Munder Difflin i18n)
-
-Un motor de traducción para interfaces de usuario basado en el contrato
-fornado E=(I,X,O,S): stdin JSON, 60s timeout, última línea stdout = JSON con
-`status/law_result/action`. LLM PROPOSES, IntentLang DECIDES.
-
-### Pipeline
-
-```
-UI source (en.json)
-      ↓ extractor
-canonical Message/Phrase IR
-      ↓ proposer (LLM or dictionary)
-target locale (es.json)
-      ↓ roundtrip verifier
-VERIFIED / REJECTED / AMBIGUOUS
+```bash
+python web/server.py
 ```
 
-### Módulos
+Después abre <http://127.0.0.1:8765>.
 
-```
-translation_engine/
-  extractor.py           # extrae frases del JSON de UI
-  proposer.py            # propone traducciones (diccionario o LLM)
-  roundtrip_verifier.py  # verifica round-trip semántico
-  context_resolver.py    # resuelve contexto de phrases
-  harness.py             # orquestador del pipeline
-  materializer.py        # materializa el resultado final
-  routing.py             # enrutamiento por idioma
-  ui_message_ir.py       # IR para mensajes de UI
-```
+La demo no ejecuta acciones peligrosas ni resuelve texto arbitrario sin el
+servidor local de Python.
 
-### Uso
+## Qué significa cada resultado
 
-```python
-from intentlang.translation_engine import harness
-
-result = harness.run({
-    "source_locale": "en",
-    "target_locale": "es",
-    "phrases": ["Save changes", "Cancel", "Delete file?"]
-})
-# result.status == "VERIFIED"
+```text
+RESOLVED   → el sistema encontró un significado único
+AMBIGUOUS  → hay varias interpretaciones posibles
+UNKNOWN    → no hay suficiente evidencia para interpretar
+INCOMPLETE → falta información necesaria
 ```
 
-### Estado actual
+Solo un significado `RESOLVED` puede continuar hacia una operación ejecutable.
+Los demás estados se conservan como evidencia para que una persona decida o
+para que el sistema amplíe su cobertura más adelante.
 
-- `es.json` conserva 1160 valores string y mantiene la misma estructura que
-  `en.json` (47 secciones); JSON válido verificado.
-- Se promovieron 15 mejoras seguras desde el compilador semántico. Quedan 2
-  falsos positivos del detector por `{{project}}` y `slash-command`, ambos
-  tokens técnicos o placeholders, no traducciones pendientes.
-- El candidato completo `es.generated.json` produjo 181 traducciones
-  compiladas y 1 entrada `NEEDS_REVIEW`; no se promovió completo porque varias
-  salidas eran gramaticalmente inferiores al texto existente.
-- Build verificado sin errores TypeScript.
+## Estado del proyecto
 
-## Semantic Phrase Compiler
+### Cerrado
 
-El compilador determinista traduce frases completas mediante la secuencia
-`surface → concepts → PhraseIR → locale grammar → target surface → verification`.
-No usa un LLM en el camino de ejecución y falla cerrado con
-`UNKNOWN_PHRASE`, `MISSING_LEXEME`, `UNSUPPORTED_RELATION` o `NEEDS_REVIEW`.
+- Meaning IR versionado e independiente del formato de entrada.
+- Parser determinista para el corpus inicial.
+- Realizador multilingüe con back-translation.
+- Comparador semántico que ignora diferencias superficiales de redacción.
+- Oráculo LLM opcional y proveedor-neutral.
+- Almacenamiento de credenciales mediante keyring del sistema.
+- Redacción centralizada de secretos.
 
-```powershell
-py translation_baseline/generalization_test.py
-py translation_baseline/smoke_v3.py
-py -m pytest -p no:asyncio tests/test_concept_lexicon.py tests/test_phrase_parser.py tests/test_locale_grammar.py tests/test_phrase_compiler.py tests/test_generate_es.py
+### En expansión
+
+- corpus de capítulos completos y textos largos;
+- más idiomas y familias lingüísticas;
+- diálogos, pronombres y referencias entre frases;
+- conectores temporales y causalidad;
+- comparación reproducible contra varios traductores externos;
+- métricas por fenómeno semántico, no solo una puntuación global.
+
+## Para desarrolladores
+
+La arquitectura interna está organizada alrededor de estas piezas:
+
+```text
+Meaning IR
+├── meaning_parser.py       interpreta texto conocido
+├── meaning_realizer.py     genera una superficie destino
+├── semantic_comparator.py  compara candidatos por significado
+├── llm_oracle.py           consulta un juez externo opcional
+└── sanitize.py             elimina secretos antes de salir
 ```
 
-Resultados medidos tras la expansión del léxico y las reglas genéricas:
-
-| medición | resultado |
-|---|---|
-| conceptos registrados | 585 |
-| generalización en 5 dominios | 34/49 (69%) |
-| tests del compilador y generación | 83/83 PASS |
-| regresión amplia sin WordNet/OMW | 295 PASS, 2 SKIP |
-
-Los tests `test_relex.py`, `test_primitives.py` y `test_lexicon.py` requieren
-instalar WordNet/OMW y se quedan esperando en este host; no se cuentan como
-PASS. La suite completa también necesita excluir `translation_baseline/smoke_test.py`
-porque comparte el nombre de módulo `smoke_test` con `ci/smoke_test.py`.
-
-## Semantic Phrase Engine
-
-Un subsystem dentro de `translation_engine/` para frases con contratos
-semánticos explícitos. Permite que LLMs propongan traducciones pero un
-verificador determinista tiene la última palabra.
-
-### Arquitectura
-
-```
-corpus (frases ancla) → Phrase IR (contrato semántico)
-      ↓
-extractor (detecta frame + roles)
-      ↓
-proposer (LLM o reglas)
-      ↓
-verifier (determinista, tiene la última palabra)
-      ↓
-mutations (pruebas de mutación)
-```
-
-### Phrase IR
-
-Cada frase carry un contrato semántico explícito:
-
-```python
-@dataclass
-class PhraseIR:
-    text: str                          # "Save changes"
-    surface_forms: list[str]           # ["save", "save changes"]
-    semantic_frame: str                # "STATE_CHANGE"
-    semantic_roles: dict[str, str]     # {"patient": "changes", "action": "save"}
-    intent: str                        # "persist_modification"
-    conditions: list[str]              # ["file_is_modified"]
-    consequences: list[str]            # ["file_written_to_disk"]
-    protected_tokens: list[str]        # ["{{filename}}"]
-    technical_terms: list[str]         # []
-    polarity: str                      # "positive"
-    modality: str                      = "directive"
-    destructive: bool                  = False
-    constraints: list[str]             = []
-    slots: dict[str, str]              = {}
-    provenance: dict[str, Any]         = {}
-```
-
-### 8 Semantic Frames
-
-| Frame | Ejemplo | Detección |
-|---|---|---|
-| ACTION | "Save changes" | verbo + objeto |
-| STATE | "File is modified" | sujeto + copula |
-| COMMUNICATION | "Send message" | verbo de comunicación |
-| PERCEPTION | "Show preview" | verbo de percepción |
-| COGNITION | "Remember password" | verbo cognitivo |
-| MOVEMENT | "Open file" | verbo de movimiento |
-| POSSESSION | "Have permission" | verbo de posesión |
-| EXISTENCE | "Error exists" | verbo existencial |
-
-### 7 Semantic Roles
-
-PATIENT, AGENT, PURPOSE, LOCATION, INSTRUMENT, TIME, MANNER
-
-### Uso
-
-```python
-from intentlang.translation_engine.semantic_phrase import (
-    extract_phrase_ir,
-    verify_proposal,
-    mutate_phrase
-)
-
-# Extraer Phrase IR de una frase
-phrase = extract_phrase_ir("Save changes")
-# PhraseIR(semantic_frame="ACTION", intent="persist_modification", ...)
-
-# Verificar una propuesta de traducción
-result = verify_proposal(phrase, "Guardar cambios")
-# VerificationResult(valid=True, score=0.95)
-
-# Mutación para pruebas
-mutated = mutate_phrase(phrase, mutation_type="polarity")
-# PhraseIR(text="Don't save changes", polarity="negative", ...)
-```
-
-### Estado actual
-
-- 54 tests passing (corpus, phrase_ir, extractor, proposer, verifier, mutations)
-- 1195/1203 frases válidas (99.3%) según el validador semántico avanzado
-- 8 frases inválidas: palabras sueltas/símbolos ("on", "...", "ok", "…", "at", "from", "to", "✕")
-- Léxico curado en `phrase_lexicon/curated_phrase_lexicon.json`
+El proyecto mantiene separado el motor de traducción semántica del antiguo
+Intent IR ejecutable. Una frase narrativa no se convierte automáticamente en
+una acción del sistema.
 
 ## Licencia
 
 MIT.
 
-## Genealogía
+## De dónde viene
 
-Viene de [JAJAJA](https://github.com/DannyBaanks/JAJAJA), un esolang cuyo alfabeto son repeticiones de `ja`.
+IntentLang nació como la continuación conceptual de
+[JAJAJA](https://github.com/DannyBaanks/JAJAJA), un esolang cuyo alfabeto son
+repeticiones de `ja`.
 
-```
-JAJAJA       representación absurda   →  mismo contrato
-intent-lang  representación humana    →  mismo contrato
-```
-
-Uno pregunta *"¿puedo ejecutar aunque la representación sea ridícula?"*. El otro pregunta *"¿puedo ejecutar sin obligar al humano a aprender una representación artificial?"*. Mismo experimento, extremos opuestos.
-
-*(The repo name is in English and the design in Spanish. Consistent with the thesis: the surface is not the semantics.)*
+JAJAJA pregunta si una representación absurda puede conservar un contrato.
+IntentLang pregunta si una representación humana puede conservar significado
+sin obligarnos a aprender una representación artificial.
