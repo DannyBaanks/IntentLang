@@ -15,11 +15,10 @@ Usage:
 """
 from __future__ import annotations
 
-import json
 import hashlib
-from dataclasses import dataclass, field, asdict
+import json
+from dataclasses import asdict, dataclass, field
 from enum import Enum
-from typing import Optional, Any
 
 PHRASE_IR_VERSION = "phrase-ir/1"
 
@@ -65,19 +64,19 @@ class Modality(str, Enum):
 class Provenance:
     """Full audit trail for phrase processing."""
     source_hash: str
-    target_hash: Optional[str] = None
+    target_hash: str | None = None
     source_locale: str = ""
     target_locale: str = ""
     phrase_ir_version: str = PHRASE_IR_VERSION
     parser_mode: str = "deterministic"  # deterministic | llm_assisted
-    extraction_model: Optional[str] = None
-    translation_model: Optional[str] = None
-    backtranslation_model: Optional[str] = None
+    extraction_model: str | None = None
+    translation_model: str | None = None
+    backtranslation_model: str | None = None
     verifier_version: str = "1.0.0"
-    context_source: Optional[str] = None
-    result: Optional[str] = None
-    evidence_hash: Optional[str] = None
-    prompt_version: Optional[str] = None
+    context_source: str | None = None
+    result: str | None = None
+    evidence_hash: str | None = None
+    prompt_version: str | None = None
     verification_strength: str = "deterministic"
     # ^ deterministic | single_model_roundtrip | dual_model_roundtrip
     #   lexical_plus_model | human_confirmed
@@ -103,15 +102,15 @@ class PhraseIR:
 
     # Semantic fields
     speech_act: str = SpeechAct.UNKNOWN.value
-    intent: Optional[str] = None
-    subject: Optional[str] = None
-    action: Optional[str] = None
-    object: Optional[str] = None
+    intent: str | None = None
+    subject: str | None = None
+    action: str | None = None
+    object: str | None = None
 
     # Logical properties
     polarity: str = "neutral"       # positive | negative | neutral | assertive
     modality: str = Modality.NONE.value
-    tense: Optional[str] = None     # past | present | future | None
+    tense: str | None = None     # past | present | future | None
     destructive: bool = False
     requires_confirmation: bool = False
 
@@ -126,11 +125,11 @@ class PhraseIR:
     technical_terms: list[str] = field(default_factory=list)
 
     # Context
-    context: Optional[str] = None
-    register: Optional[str] = None  # formal | informal | technical | casual
+    context: str | None = None
+    register: str | None = None  # formal | informal | technical | casual
 
     # Provenance
-    provenance: Optional[Provenance] = None
+    provenance: Provenance | None = None
     status: str = PhraseStatus.UNKNOWN.value
 
     def to_dict(self) -> dict:
@@ -240,5 +239,5 @@ class PhraseIR:
 
 def generate_phrase_id(source_surface: str, source_locale: str) -> str:
     """Generate a deterministic ID for a phrase."""
-    content = "%s:%s" % (source_locale, source_surface)
+    content = f"{source_locale}:{source_surface}"
     return hashlib.sha256(content.encode("utf-8")).hexdigest()[:12]

@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Optional
 
 # ── Pattern Libraries ────────────────────────────────────────────────
 
@@ -216,19 +215,25 @@ def _extract_conditions(text: str) -> list[str]:
     """Extract conditional clauses."""
     conditions = []
     # "if X then Y"
-    for match in re.finditer(r"\bif\b\s+(.+?)\s+then\b", text, re.IGNORECASE):
-        conditions.append(match.group(1).strip())
+    conditions.extend(
+        match.group(1).strip()
+        for match in re.finditer(r"\bif\b\s+(.+?)\s+then\b", text, re.IGNORECASE)
+    )
     # "if X, Y" (without then)
     for match in re.finditer(r"\bif\b\s+(.+?),", text, re.IGNORECASE):
         cond = match.group(1).strip()
         if cond not in conditions:  # avoid duplicates
             conditions.append(cond)
     # "unless X"
-    for match in re.finditer(r"\bunless\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE):
-        conditions.append("NOT: " + match.group(1).strip())
+    conditions.extend(
+        "NOT: " + match.group(1).strip()
+        for match in re.finditer(r"\bunless\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE)
+    )
     # "when X"
-    for match in re.finditer(r"\bwhen\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE):
-        conditions.append(match.group(1).strip())
+    conditions.extend(
+        match.group(1).strip()
+        for match in re.finditer(r"\bwhen\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE)
+    )
     return conditions
 
 
@@ -236,11 +241,15 @@ def _extract_consequences(text: str) -> list[str]:
     """Extract consequence phrases."""
     consequences = []
     # "will X" where X is destructive
-    for match in re.finditer(r"\bwill\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE):
-        consequences.append(match.group(1).strip())
+    consequences.extend(
+        match.group(1).strip()
+        for match in re.finditer(r"\bwill\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE)
+    )
     # "this will X"
-    for match in re.finditer(r"\bthis will\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE):
-        consequences.append(match.group(1).strip())
+    consequences.extend(
+        match.group(1).strip()
+        for match in re.finditer(r"\bthis will\b\s+(.+?)(?:\.|,|$)", text, re.IGNORECASE)
+    )
     # "cannot be undone"
     if re.search(r"\bcannot be undone\b", text, re.IGNORECASE):
         consequences.append("irreversible")
@@ -273,7 +282,7 @@ def extract_semantics(surface: str, locale: str = "en") -> ExtractedFacts:
     facts.modality = modal
     facts.modal_markers = modal_markers
     if modal != "NONE":
-        facts.facts.append("observed_fact: modality=%s" % modal)
+        facts.facts.append(f"observed_fact: modality={modal}")
 
     # Destructive
     dest_matches = DESTRUCTIVE_RE.findall(surface)

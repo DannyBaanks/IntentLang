@@ -9,13 +9,11 @@ Usage:
 """
 from __future__ import annotations
 
-import json
 from dataclasses import dataclass, field
-from typing import Optional
 
-from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseIR, PhraseStatus
 from intentlang.translation_engine.semantic_phrase.extractor import extract_semantics
-from intentlang.translation_engine.semantic_phrase.verifier import verify_roundtrip, VerifyResult
+from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseStatus
+from intentlang.translation_engine.semantic_phrase.verifier import VerifyResult, verify_roundtrip
 
 
 @dataclass
@@ -35,7 +33,7 @@ class MutationTest:
     mutation: Mutation
     result: VerifyResult
     detected: bool
-    detection_field: Optional[str] = None
+    detection_field: str | None = None
 
 
 @dataclass
@@ -172,7 +170,7 @@ def build_mutation_catalog() -> list[Mutation]:
     ]
 
 
-def _detect_mutation(result: VerifyResult, mutation: Mutation) -> tuple[bool, Optional[str]]:
+def _detect_mutation(result: VerifyResult, mutation: Mutation) -> tuple[bool, str | None]:
     """Check if a mutation was detected by the verifier."""
     if result.verdict in (PhraseStatus.REJECTED.value, PhraseStatus.NEEDS_REVIEW.value):
         # Find which check failed
@@ -241,28 +239,28 @@ def format_mutation_result(result: MutationResult) -> str:
     """Format mutation result for display."""
     lines = [
         "=== Mutation Harness ===",
-        "Total mutations: %d" % result.total_mutations,
-        "Detected: %d" % result.detected,
-        "Missed: %d" % result.missed,
-        "Pass rate: %.1f%%" % (result.pass_rate * 100),
+        f"Total mutations: {result.total_mutations}",
+        f"Detected: {result.detected}",
+        f"Missed: {result.missed}",
+        f"Pass rate: {result.pass_rate * 100:.1f}%",
         "",
     ]
 
     if result.all_passed:
         lines.append("STATUS: PASS — all mutations detected")
     else:
-        lines.append("STATUS: FAIL — %d mutations missed" % result.missed)
+        lines.append(f"STATUS: FAIL — {result.missed} mutations missed")
 
     lines.append("")
     lines.append("=== Mutation Details ===")
     for test in result.tests:
         status = "DETECTED" if test.detected else "MISSED"
-        lines.append("  [%s] %s" % (status, test.mutation.name))
-        lines.append("    Source:     \"%s\"" % test.mutation.source)
-        lines.append("    Mutated:    \"%s\"" % test.mutation.mutated)
-        lines.append("    Verdict:    %s" % test.result.verdict)
+        lines.append(f"  [{status}] {test.mutation.name}")
+        lines.append(f"    Source:     \"{test.mutation.source}\"")
+        lines.append(f"    Mutated:    \"{test.mutation.mutated}\"")
+        lines.append(f"    Verdict:    {test.result.verdict}")
         if test.detection_field:
-            lines.append("    Field:      %s" % test.detection_field)
+            lines.append(f"    Field:      {test.detection_field}")
         lines.append("")
 
     return "\n".join(lines)

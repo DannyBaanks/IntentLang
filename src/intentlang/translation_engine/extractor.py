@@ -11,9 +11,9 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
-import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -54,12 +54,11 @@ TECHNICAL_TOKENS = {
     "SQLite", "PostgreSQL", "MySQL", "Redis", "MongoDB",
     "Docker", "Kubernetes", "AWS", "GCP", "Azure",
     "Markdown", "LaTeX", "PDF", "PNG", "JPG", "SVG",
-    "USB", "TLS", "SSL", "SSH", "DNS", "TCP", "UDP", "USD", "REV",
+    "USB", "TLS", "SSL", "DNS", "TCP", "UDP", "USD", "REV",
     "IMG", "DIFF",
     "IDE", "LSP", "DAP", "AST", "IR", " REPL",
     "Ada", "Munder Difflin", "munder-difflin", "Slack", "Grok", "Kimi",
-    "Antigravity", "Copilot", "Cline", "OpenClaw", "Tauri", "Vite",
-    "Pixi.js", "xterm.js", "OpenTelemetry", "Whisper",
+    "Antigravity", "Copilot", "Cline", "OpenClaw", "Tauri", "Pixi.js", "xterm.js", "OpenTelemetry", "Whisper",
     "/skill", "/help",
 }
 
@@ -142,7 +141,7 @@ def classify_string(value: Any, section: str, key: str) -> str:
         # Refine based on value patterns
         if v.endswith("?"):
             return "dialog"
-        if v.endswith("…") or v.endswith("..."):
+        if v.endswith(("…", "...")):
             return "status"
         if v.startswith("{{") and v.endswith("}}"):
             return "variable"
@@ -154,7 +153,7 @@ def classify_string(value: Any, section: str, key: str) -> str:
     # Fallback heuristics
     if v.endswith("?"):
         return "dialog"
-    if v.endswith("…") or v.endswith("..."):
+    if v.endswith(("…", "...")):
         return "status"
     if PLACEHOLDER_RE.search(v):
         return "template"
@@ -204,7 +203,7 @@ def is_technical(value: Any, section: str, key: str) -> bool:
         return True
 
     # URLs and endpoints
-    if v.startswith("http://") or v.startswith("https://"):
+    if v.startswith(("http://", "https://")):
         return True
 
     # Command syntax: /word (slash commands) — only if the whole value is just the command
@@ -233,17 +232,17 @@ def is_brand(value: Any) -> bool:
 def infer_type_from_key(key: str) -> str:
     """Infer type from the key name itself."""
     k = key.lower()
-    if k.endswith("title") or k.endswith("label"):
+    if k.endswith(("title", "label")):
         return "label"
     if k.endswith("placeholder"):
         return "placeholder"
-    if k.endswith("tooltip") or k.endswith("hint"):
+    if k.endswith(("tooltip", "hint")):
         return "tooltip"
-    if k.endswith("error") or k.endswith("warning"):
+    if k.endswith(("error", "warning")):
         return "error"
-    if k.endswith("button") or k.endswith("action"):
+    if k.endswith(("button", "action")):
         return "button"
-    if k.endswith("heading") or k.endswith("header"):
+    if k.endswith(("heading", "header")):
         return "heading"
     return "unknown"
 
@@ -349,7 +348,7 @@ def main():
     total = len(inventory)
     translatable = sum(1 for v in inventory.values() if v["translatable"])
     skipped = total - translatable
-    sections = set(v["section"] for v in inventory.values())
+    sections = {v["section"] for v in inventory.values()}
     types = {}
     for v in inventory.values():
         t = v["type"]

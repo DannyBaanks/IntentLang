@@ -17,10 +17,16 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
-from typing import Optional
+from typing import Any
 
-from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseIR, PhraseStatus, Provenance
-from intentlang.translation_engine.semantic_phrase.extractor import ExtractedFacts, extract_semantics
+from intentlang.translation_engine.semantic_phrase.extractor import (
+    ExtractedFacts,
+    extract_semantics,
+)
+from intentlang.translation_engine.semantic_phrase.phrase_ir import (
+    PhraseIR,
+    PhraseStatus,
+)
 
 
 @dataclass
@@ -30,7 +36,7 @@ class InvariantCheck:
     source_value: Any
     target_value: Any
     passed: bool
-    reason: Optional[str] = None
+    reason: str | None = None
 
 
 @dataclass
@@ -39,13 +45,13 @@ class VerifyResult:
     verdict: str  # PhraseStatus value
     source_phrase: str
     target_phrase: str
-    source_ir: Optional[PhraseIR] = None
-    target_ir: Optional[PhraseIR] = None
-    backtranslation: Optional[str] = None
+    source_ir: PhraseIR | None = None
+    target_ir: PhraseIR | None = None
+    backtranslation: str | None = None
     checks: list[InvariantCheck] = field(default_factory=list)
     limitations: list[str] = field(default_factory=list)
     verifier_mode: str = "deterministic"
-    evidence_hash: Optional[str] = None
+    evidence_hash: str | None = None
 
     @property
     def passed(self) -> bool:
@@ -118,11 +124,11 @@ def verify_roundtrip(
     target: str,
     source_locale: str = "en",
     target_locale: str = "es",
-    source_ir: Optional[PhraseIR] = None,
-    target_ir: Optional[PhraseIR] = None,
-    backtranslation: Optional[str] = None,
-    source_extracted: Optional[ExtractedFacts] = None,
-    target_extracted: Optional[ExtractedFacts] = None,
+    source_ir: PhraseIR | None = None,
+    target_ir: PhraseIR | None = None,
+    backtranslation: str | None = None,
+    source_extracted: ExtractedFacts | None = None,
+    target_extracted: ExtractedFacts | None = None,
 ) -> VerifyResult:
     """Verify semantic roundtrip between source and target phrases.
 
@@ -154,12 +160,16 @@ def verify_roundtrip(
 
     # Build IRs if not provided
     if source_ir is None:
-        from intentlang.translation_engine.semantic_phrase.proposer import build_phrase_ir_from_extraction
+        from intentlang.translation_engine.semantic_phrase.proposer import (
+            build_phrase_ir_from_extraction,
+        )
         source_ir = build_phrase_ir_from_extraction(
             source_extracted, source, target_locale
         )
     if target_ir is None:
-        from intentlang.translation_engine.semantic_phrase.proposer import build_phrase_ir_from_extraction
+        from intentlang.translation_engine.semantic_phrase.proposer import (
+            build_phrase_ir_from_extraction,
+        )
         target_ir = build_phrase_ir_from_extraction(
             target_extracted, target, target_locale, source_locale
         )
@@ -239,7 +249,9 @@ def verify_roundtrip(
 
     if backtranslation:
         # Compare backtranslation semantic hash with source
-        from intentlang.translation_engine.semantic_phrase.extractor import extract_semantics as extract
+        from intentlang.translation_engine.semantic_phrase.extractor import (
+            extract_semantics as extract,
+        )
         bt_extracted = extract(backtranslation, source_locale)
 
         # If negation differs between source and backtranslation, flag it
@@ -305,29 +317,27 @@ def format_verify_result(result: VerifyResult) -> str:
     """Format verification result for display."""
     lines = [
         "=== Semantic Roundtrip Verification ===",
-        "Verdict: %s" % result.verdict,
+        f"Verdict: {result.verdict}",
         "Pass rate: %.1f%%" % (result.pass_rate * 100),
         "",
-        "Source: \"%s\"" % result.source_phrase[:80],
-        "Target: \"%s\"" % result.target_phrase[:80],
+        f"Source: \"{result.source_phrase[:80]}\"",
+        f"Target: \"{result.target_phrase[:80]}\"",
     ]
 
     if result.backtranslation:
-        lines.append("Back-translation: \"%s\"" % result.backtranslation[:80])
+        lines.append(f"Back-translation: \"{result.backtranslation[:80]}\"")
 
     lines.append("")
     lines.append("=== Invariant Checks ===")
     for c in result.checks:
         status = "PASS" if c.passed else "FAIL"
-        lines.append("  [%s] %s: %s -> %s" % (
-            status, c.field, c.source_value, c.target_value))
+        lines.append(f"  [{status}] {c.field}: {c.source_value} -> {c.target_value}")
         if c.reason:
-            lines.append("         reason: %s" % c.reason)
+            lines.append(f"         reason: {c.reason}")
 
     if result.limitations:
         lines.append("")
         lines.append("=== Limitations ===")
-        for lim in result.limitations:
-            lines.append("  - %s" % lim)
+        lines.extend(f"  - {lim}" for lim in result.limitations)
 
     return "\n".join(lines)

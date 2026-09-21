@@ -11,7 +11,6 @@ Usage:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
 
 
 @dataclass
@@ -130,7 +129,7 @@ def _match_rule(entry: dict, match: dict) -> bool:
     return True
 
 
-def resolve_context(word: str, entry: dict) -> Optional[ContextHint]:
+def resolve_context(word: str, entry: dict) -> ContextHint | None:
     """Resolve the sense of a homograph using IR context.
 
     Args:
@@ -181,7 +180,7 @@ def enrich_inventory_with_context(inventory_path: str, output_path: str) -> dict
     resolved = 0
     ambiguous = 0
 
-    for key, entry in data["inventory"].items():
+    for entry in data["inventory"].values():
         raw_value = entry.get("value", "")
         value = " ".join(str(item) for item in raw_value) \
             if isinstance(raw_value, list) else str(raw_value)

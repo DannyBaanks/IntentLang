@@ -1,11 +1,8 @@
 """Tests for M2 — Semantic Extractor."""
 from __future__ import annotations
 
-import pytest
-
 from intentlang.translation_engine.semantic_phrase.extractor import (
     extract_semantics,
-    ExtractedFacts,
 )
 
 

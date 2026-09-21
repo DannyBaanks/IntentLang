@@ -18,10 +18,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Optional
+from typing import Any
 
-from intentlang.translation_engine.ui_message_ir import UIMessageIR, build_ir_from_inventory, SemanticInvariants
+from intentlang.translation_engine.ui_message_ir import (
+    UIMessageIR,
+    build_ir_from_inventory,
+)
 
 
 @dataclass
@@ -202,20 +204,21 @@ def format_result(result: RoundtripResult) -> str:
     """Format roundtrip result for display."""
     lines = [
         "=== Roundtrip Verification ===",
-        "Total keys: %d" % result.total_keys,
-        "Checked: %d (passthrough excluded)" % result.checked,
-        "Passed: %d" % result.passed,
-        "Failed: %d" % result.failed,
-        "Pass rate: %.1f%%" % (result.pass_rate * 100),
+        f"Total keys: {result.total_keys}",
+        f"Checked: {result.checked} (passthrough excluded)",
+        f"Passed: {result.passed}",
+        f"Failed: {result.failed}",
+        f"Pass rate: {result.pass_rate * 100:.1f}%",
     ]
 
     if result.mismatches:
         lines.append("")
         lines.append("=== Mismatches ===")
-        for m in result.mismatches[:20]:
-            lines.append("  %s [%s]: %s -> %s" % (
-                m.key, m.field, m.source_value, m.target_value))
+        lines.extend(
+            f"  {m.key} [{m.field}]: {m.source_value} -> {m.target_value}"
+            for m in result.mismatches[:20]
+        )
         if len(result.mismatches) > 20:
-            lines.append("  ... and %d more" % (len(result.mismatches) - 20))
+            lines.append(f"  ... and {len(result.mismatches) - 20} more")
 
     return "\n".join(lines)

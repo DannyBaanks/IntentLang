@@ -1,13 +1,11 @@
 """Tests for M4 — Semantic Roundtrip Verifier."""
 from __future__ import annotations
 
-import pytest
-
-from intentlang.translation_engine.semantic_phrase.verifier import (
-    verify_roundtrip,
-    format_verify_result,
-)
 from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseStatus
+from intentlang.translation_engine.semantic_phrase.verifier import (
+    format_verify_result,
+    verify_roundtrip,
+)
 
 
 def test_identical_phrases_verified():

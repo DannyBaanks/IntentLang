@@ -13,12 +13,11 @@ Usage:
 """
 from __future__ import annotations
 
-import json
 import hashlib
+import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
 CORPUS_VERSION = "1.0.0"
 
@@ -68,7 +67,7 @@ class CorpusEntry:
 def _classify_phrase_type(value: str, section: str, key: str) -> str:
     """Classify the semantic type of a phrase."""
     v = value.strip().lower()
-    k = key.lower()
+    key.lower()
 
     # Warning patterns
     if any(w in v for w in ["will delete", "will remove", "will discard",
@@ -156,7 +155,7 @@ def _compute_complexity(value: str, section: str, key: str) -> tuple[float, list
     ph_count = len(re.findall(r"\{\{[^}]+\}\}|\{[^}]+\}|%[sd]", v))
     if ph_count > 0:
         score += 0.05 * ph_count
-        reasons.append("placeholders:%d" % ph_count)
+        reasons.append(f"placeholders:{ph_count}")
 
     return min(score, 1.0), reasons
 

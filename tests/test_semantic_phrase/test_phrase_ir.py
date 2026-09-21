@@ -1,14 +1,12 @@
 """Tests for M1 — Phrase IR schema and hashing."""
 from __future__ import annotations
 
-import pytest
-
 from intentlang.translation_engine.semantic_phrase.phrase_ir import (
+    Modality,
     PhraseIR,
     PhraseStatus,
-    SpeechAct,
-    Modality,
     Provenance,
+    SpeechAct,
     generate_phrase_id,
 )
 

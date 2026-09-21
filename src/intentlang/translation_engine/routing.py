@@ -14,11 +14,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from intentlang.translation_engine.semantic_phrase.extractor import (
-    extract_semantics,
     ExtractedFacts,
+    extract_semantics,
 )
 
 
@@ -35,7 +34,7 @@ class RoutingDecision:
     path: TranslationPath
     reason: str
     confidence: float  # 0.0 to 1.0
-    extracted_facts: Optional[ExtractedFacts] = None
+    extracted_facts: ExtractedFacts | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -191,7 +190,7 @@ def format_routing_report(stats: dict) -> str:
     """Format routing report for display."""
     lines = [
         "=== Translation Routing Report ===",
-        "Total phrases: %d" % stats["total"],
+        f"Total phrases: {stats['total']}",
         "",
         "=== Path Distribution ===",
     ]
@@ -200,9 +199,9 @@ def format_routing_report(stats: dict) -> str:
         ui_pct = stats["ui_message_ir"] / stats["total"] * 100
         sp_pct = stats["semantic_phrase"] / stats["total"] * 100
         hy_pct = stats["hybrid"] / stats["total"] * 100
-        lines.append("UI Message IR: %d (%.1f%%)" % (stats["ui_message_ir"], ui_pct))
-        lines.append("Semantic Phrase: %d (%.1f%%)" % (stats["semantic_phrase"], sp_pct))
-        lines.append("Hybrid: %d (%.1f%%)" % (stats["hybrid"], hy_pct))
+        lines.append(f"UI Message IR: {stats['ui_message_ir']} ({ui_pct:.1f}%)")
+        lines.append(f"Semantic Phrase: {stats['semantic_phrase']} ({sp_pct:.1f}%)")
+        lines.append(f"Hybrid: {stats['hybrid']} ({hy_pct:.1f}%)")
 
     # Show routing reasons
     reason_counts = {}
@@ -213,14 +212,14 @@ def format_routing_report(stats: dict) -> str:
     lines.append("")
     lines.append("=== Routing Reasons ===")
     for reason, count in sorted(reason_counts.items(), key=lambda x: -x[1]):
-        lines.append("  %s: %d" % (reason, count))
+        lines.append(f"  {reason}: {count}")
 
     # Show sample decisions
     lines.append("")
     lines.append("=== Sample Decisions ===")
     for d in stats["decisions"][:10]:
-        lines.append("  [%s] %s" % (d["path"], d["key"]))
-        lines.append("    Source: %s" % d["source"])
-        lines.append("    Reason: %s (conf: %.2f)" % (d["reason"], d["confidence"]))
+        lines.append(f"  [{d['path']}] {d['key']}")
+        lines.append(f"    Source: {d['source']}")
+        lines.append(f"    Reason: {d['reason']} (conf: {d['confidence']:.2f})")
 
     return "\n".join(lines)

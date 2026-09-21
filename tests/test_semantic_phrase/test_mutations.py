@@ -1,12 +1,10 @@
 """Tests for M5 — Mutation Harness."""
 from __future__ import annotations
 
-import pytest
-
 from intentlang.translation_engine.semantic_phrase.mutations import (
-    run_mutation_harness,
     build_mutation_catalog,
     format_mutation_result,
+    run_mutation_harness,
 )
 
 

@@ -17,10 +17,9 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 from intentlang.translation_engine.ui_message_ir import UIMessageIR, build_ir_from_inventory
-
 
 # ── Placeholder preservation ────────────────────────────────────────
 PLACEHOLDER_RE = re.compile(
@@ -238,7 +237,7 @@ UI_DICTIONARY: dict[str, dict[str, str]] = {
 }
 
 
-def _translate_word(word: str, target_lang: str, context: Optional[str] = None) -> str:
+def _translate_word(word: str, target_lang: str, context: str | None = None) -> str:
     """Translate a single word using dictionary + context."""
     word_lower = word.lower()
 
@@ -255,7 +254,7 @@ def _translate_word(word: str, target_lang: str, context: Optional[str] = None) 
 def materialize_single(
     msg: UIMessageIR,
     target_lang: str,
-    dictionary: Optional[dict] = None,
+    dictionary: dict | None = None,
 ) -> Any:
     """Translate a single IR message to a target language.
 
@@ -318,7 +317,7 @@ def _translate_phrase(text: str, target_lang: str, section: str) -> str:
 
     for word in words:
         # Skip protected tokens
-        if word.startswith("__PH") or word.startswith("__ACC") or word.startswith("__TECH"):
+        if word.startswith(("__PH", "__ACC", "__TECH")):
             translated_words.append(word)
             continue
 
@@ -341,7 +340,7 @@ def materialize_locale(
     inventory_path: str,
     target_lang: str,
     output_path: str,
-    dictionary: Optional[dict] = None,
+    dictionary: dict | None = None,
 ) -> dict:
     """Materialize a complete locale file from IR messages.
 

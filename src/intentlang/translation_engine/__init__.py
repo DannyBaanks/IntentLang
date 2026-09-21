@@ -18,27 +18,27 @@ Usage as CLI:
 """
 from __future__ import annotations
 
-from intentlang.translation_engine.extractor import build_inventory, generate_hash
-from intentlang.translation_engine.ui_message_ir import (
-    UIMessageIR,
-    SemanticInvariants,
-    IR_VERSION,
-    build_ir_from_inventory,
-)
 from intentlang.translation_engine.context_resolver import (
-    resolve_context,
     ContextHint,
     enrich_inventory_with_context,
+    resolve_context,
 )
+from intentlang.translation_engine.extractor import build_inventory, generate_hash
+from intentlang.translation_engine.harness import run_harness
 from intentlang.translation_engine.materializer import (
-    materialize_single,
     materialize_locale,
+    materialize_single,
 )
 from intentlang.translation_engine.roundtrip_verifier import (
-    verify_roundtrip,
     RoundtripResult,
+    verify_roundtrip,
 )
-from intentlang.translation_engine.harness import run_harness
+from intentlang.translation_engine.ui_message_ir import (
+    IR_VERSION,
+    SemanticInvariants,
+    UIMessageIR,
+    build_ir_from_inventory,
+)
 
 
 def run_pipeline(
@@ -60,19 +60,19 @@ def run_pipeline(
 
 
 __all__ = [
-    "run_pipeline",
-    "build_inventory",
-    "generate_hash",
-    "UIMessageIR",
-    "SemanticInvariants",
     "IR_VERSION",
-    "build_ir_from_inventory",
-    "resolve_context",
     "ContextHint",
-    "enrich_inventory_with_context",
-    "materialize_single",
-    "materialize_locale",
-    "verify_roundtrip",
     "RoundtripResult",
+    "SemanticInvariants",
+    "UIMessageIR",
+    "build_inventory",
+    "build_ir_from_inventory",
+    "enrich_inventory_with_context",
+    "generate_hash",
+    "materialize_locale",
+    "materialize_single",
+    "resolve_context",
     "run_harness",
+    "run_pipeline",
+    "verify_roundtrip",
 ]

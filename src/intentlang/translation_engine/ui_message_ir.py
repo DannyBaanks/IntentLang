@@ -24,10 +24,10 @@ Usage:
 """
 from __future__ import annotations
 
-import json
 import hashlib
-from dataclasses import dataclass, field, asdict
-from typing import Any, Optional
+import json
+from dataclasses import asdict, dataclass, field
+from typing import Any
 
 IR_VERSION = "1.0.0"
 
@@ -35,11 +35,11 @@ IR_VERSION = "1.0.0"
 @dataclass
 class SemanticInvariants:
     """Semantic properties that must survive translation."""
-    object: Optional[str] = None
-    context: Optional[str] = None
-    polarity: Optional[str] = None
+    object: str | None = None
+    context: str | None = None
+    polarity: str | None = None
     destructive: bool = False
-    action: Optional[str] = None
+    action: str | None = None
 
 
 @dataclass
@@ -52,9 +52,9 @@ class UIMessageIR:
     value: Any
     placeholders: list[str] = field(default_factory=list)
     accelerators: list[str] = field(default_factory=list)
-    semantic: Optional[SemanticInvariants] = None
+    semantic: SemanticInvariants | None = None
     passthrough: bool = False
-    skip_reason: Optional[str] = None
+    skip_reason: str | None = None
     length: int = 0
     ir_version: str = IR_VERSION
 
@@ -125,7 +125,7 @@ def build_ir_from_inventory(inventory_path: str) -> list[UIMessageIR]:
     return messages
 
 
-def _infer_semantics(key: str, entry: dict) -> Optional[SemanticInvariants]:
+def _infer_semantics(key: str, entry: dict) -> SemanticInvariants | None:
     """Heuristic semantic inference from key name and type."""
     k = key.lower()
     raw_value = entry.get("value", "")

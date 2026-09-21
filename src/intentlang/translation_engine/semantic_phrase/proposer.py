@@ -11,12 +11,15 @@ Usage:
 """
 from __future__ import annotations
 
-import json
-from dataclasses import dataclass, field
-from typing import Optional, Protocol, Any
+from dataclasses import dataclass
+from typing import Protocol
 
-from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseIR, PhraseStatus, Provenance
 from intentlang.translation_engine.semantic_phrase.extractor import ExtractedFacts
+from intentlang.translation_engine.semantic_phrase.phrase_ir import (
+    PhraseIR,
+    PhraseStatus,
+    Provenance,
+)
 
 
 class LLMBackend(Protocol):
@@ -25,7 +28,7 @@ class LLMBackend(Protocol):
     def complete(
         self,
         prompt: str,
-        system: Optional[str] = None,
+        system: str | None = None,
         temperature: float = 0.0,
         max_tokens: int = 1024,
     ) -> str:
@@ -41,8 +44,8 @@ class ProposeResult:
     model: str
     provider: str
     confidence: float = 0.0
-    raw_response: Optional[str] = None
-    error: Optional[str] = None
+    raw_response: str | None = None
+    error: str | None = None
 
     def to_dict(self) -> dict:
         return {
@@ -132,7 +135,7 @@ class ProposerAdapter:
 
     def __init__(
         self,
-        backend: Optional[LLMBackend] = None,
+        backend: LLMBackend | None = None,
         strict: bool = True,
         source_locale: str = "en",
         target_locale: str = "es",
@@ -293,7 +296,10 @@ def build_phrase_ir_from_extraction(
 
     This is the deterministic base — no LLM involved.
     """
-    from intentlang.translation_engine.semantic_phrase.phrase_ir import SpeechAct, Modality, generate_phrase_id
+    from intentlang.translation_engine.semantic_phrase.phrase_ir import (
+        SpeechAct,
+        generate_phrase_id,
+    )
 
     # Determine speech act
     if extracted.is_warning:

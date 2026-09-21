@@ -19,12 +19,22 @@ Usage:
 """
 from __future__ import annotations
 
-from intentlang.translation_engine.semantic_phrase.phrase_ir import PhraseIR, PhraseStatus, Provenance
-from intentlang.translation_engine.semantic_phrase.corpus import extract_corpus, CorpusEntry
-from intentlang.translation_engine.semantic_phrase.extractor import extract_semantics, ExtractedFacts
+from intentlang.translation_engine.semantic_phrase.corpus import CorpusEntry, extract_corpus
+from intentlang.translation_engine.semantic_phrase.extractor import (
+    ExtractedFacts,
+    extract_semantics,
+)
+from intentlang.translation_engine.semantic_phrase.mutations import (
+    MutationResult,
+    run_mutation_harness,
+)
+from intentlang.translation_engine.semantic_phrase.phrase_ir import (
+    PhraseIR,
+    PhraseStatus,
+    Provenance,
+)
 from intentlang.translation_engine.semantic_phrase.proposer import ProposerAdapter, ProposeResult
-from intentlang.translation_engine.semantic_phrase.verifier import verify_roundtrip, VerifyResult
-from intentlang.translation_engine.semantic_phrase.mutations import run_mutation_harness, MutationResult
+from intentlang.translation_engine.semantic_phrase.verifier import VerifyResult, verify_roundtrip
 
 
 def run_phrase_pipeline(
@@ -32,7 +42,7 @@ def run_phrase_pipeline(
     target: str,
     source_locale: str = "en",
     target_locale: str = "es",
-    proposer: Optional[ProposerAdapter] = None,
+    proposer: ProposerAdapter | None = None,
 ) -> VerifyResult:
     """Run the complete phrase translation pipeline.
 
@@ -91,18 +101,18 @@ def run_phrase_pipeline(
 
 
 __all__ = [
-    "run_phrase_pipeline",
+    "CorpusEntry",
+    "ExtractedFacts",
+    "MutationResult",
     "PhraseIR",
     "PhraseStatus",
-    "Provenance",
-    "extract_corpus",
-    "CorpusEntry",
-    "extract_semantics",
-    "ExtractedFacts",
-    "ProposerAdapter",
     "ProposeResult",
-    "verify_roundtrip",
+    "ProposerAdapter",
+    "Provenance",
     "VerifyResult",
+    "extract_corpus",
+    "extract_semantics",
     "run_mutation_harness",
-    "MutationResult",
+    "run_phrase_pipeline",
+    "verify_roundtrip",
 ]

@@ -9,22 +9,17 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Optional
 
 from intentlang.translation_engine.semantic_phrase import (
+    PhraseStatus,
     extract_semantics,
     verify_roundtrip,
-    PhraseStatus,
-)
-from intentlang.translation_engine.semantic_phrase.corpus import (
-    extract_corpus,
-    CorpusEntry,
 )
 
 
 def load_needs_review_phrases(
     en_json_path: str,
-    es_json_path: Optional[str] = None,
+    es_json_path: str | None = None,
 ) -> list[dict]:
     """Load phrases that need review from Phase 1 output.
 
@@ -34,14 +29,14 @@ def load_needs_review_phrases(
     if not en_path.exists():
         return []
 
-    with open(en_path, "r", encoding="utf-8") as f:
+    with open(en_path, encoding="utf-8") as f:
         en_data = json.load(f)
 
     es_data = {}
     if es_json_path:
         es_path = Path(es_json_path)
         if es_path.exists():
-            with open(es_path, "r", encoding="utf-8") as f:
+            with open(es_path, encoding="utf-8") as f:
                 es_data = json.load(f)
 
     phrases = []
@@ -61,7 +56,7 @@ def load_needs_review_phrases(
 
         if isinstance(obj, dict):
             for k, v in obj.items():
-                new_path = path + [k]
+                new_path = [*path, k]
                 if isinstance(v, str):
                     # This is a leaf string - get target from ES
                     target = get_nested(es_data, new_path)
@@ -88,7 +83,7 @@ def load_needs_review_phrases(
                     traverse(v, new_path, section=k)
         elif isinstance(obj, list):
             for i, item in enumerate(obj):
-                new_path = path + [str(i)]
+                new_path = [*path, str(i)]
                 if isinstance(item, str):
                     target = get_nested(es_data, new_path)
                     if target is None:
@@ -199,10 +194,10 @@ def format_corpus_report(results: dict) -> str:
     """Format corpus report for display."""
     lines = [
         "=== Semantic Phrase Corpus Analysis ===",
-        "Total phrases: %d" % results["total_phrases"],
-        "Verified: %d" % results["verified"],
-        "Needs review: %d" % results["needs_review"],
-        "Rejected: %d" % results["rejected"],
+        f"Total phrases: {results['total_phrases']}",
+        f"Verified: {results['verified']}",
+        f"Needs review: {results['needs_review']}",
+        f"Rejected: {results['rejected']}",
         "",
         "=== Verdict Distribution ===",
     ]
@@ -211,9 +206,9 @@ def format_corpus_report(results: dict) -> str:
         v_pct = results["verified"] / results["total_phrases"] * 100
         r_pct = results["needs_review"] / results["total_phrases"] * 100
         j_pct = results["rejected"] / results["total_phrases"] * 100
-        lines.append("Verified: %.1f%%" % v_pct)
-        lines.append("Needs review: %.1f%%" % r_pct)
-        lines.append("Rejected: %.1f%%" % j_pct)
+        lines.append(f"Verified: {v_pct:.1f}%")
+        lines.append(f"Needs review: {r_pct:.1f}%")
+        lines.append(f"Rejected: {j_pct:.1f}%")
 
     # Show failed check distribution
     check_counts = {}
@@ -225,7 +220,7 @@ def format_corpus_report(results: dict) -> str:
         lines.append("")
         lines.append("=== Failed Check Distribution ===")
         for check, count in sorted(check_counts.items(), key=lambda x: -x[1]):
-            lines.append("  %s: %d" % (check, count))
+            lines.append(f"  {check}: {count}")
 
     # Show sample rejected phrases
     rejected = [d for d in results["details"] if d["verdict"] == "REJECTED"]
@@ -233,10 +228,10 @@ def format_corpus_report(results: dict) -> str:
         lines.append("")
         lines.append("=== Sample Rejected Phrases ===")
         for d in rejected[:5]:
-            lines.append("  Key: %s" % d["key"])
-            lines.append("    Source: %s" % d["source"])
-            lines.append("    Target: %s" % d["target"])
-            lines.append("    Failed: %s" % ", ".join(d["failed_checks"]))
+            lines.append(f"  Key: {d['key']}")
+            lines.append(f"    Source: {d['source']}")
+            lines.append(f"    Target: {d['target']}")
+            lines.append(f"    Failed: {', '.join(d['failed_checks'])}")
             lines.append("")
 
     return "\n".join(lines)

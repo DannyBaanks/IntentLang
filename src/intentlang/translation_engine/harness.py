@@ -11,14 +11,14 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
-from datetime import datetime, timezone
 
-from intentlang.translation_engine.extractor import build_inventory, generate_hash
-from intentlang.translation_engine.ui_message_ir import build_ir_from_inventory, IR_VERSION
 from intentlang.translation_engine.context_resolver import enrich_inventory_with_context
+from intentlang.translation_engine.extractor import build_inventory, generate_hash
 from intentlang.translation_engine.materializer import materialize_locale
 from intentlang.translation_engine.roundtrip_verifier import verify_roundtrip
+from intentlang.translation_engine.ui_message_ir import IR_VERSION, build_ir_from_inventory
 
 
 def run_harness(
@@ -31,7 +31,7 @@ def run_harness(
     output.mkdir(parents=True, exist_ok=True)
 
     results = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": datetime.now(UTC).isoformat(),
         "source": source_path,
         "target_lang": target_lang,
         "ir_version": IR_VERSION,
@@ -48,7 +48,7 @@ def run_harness(
     total = len(inventory)
     translatable = sum(1 for v in inventory.values() if v["translatable"])
     skipped = total - translatable
-    sections = set(v["section"] for v in inventory.values())
+    sections = {v["section"] for v in inventory.values()}
 
     inventory_output = {
         "meta": {
@@ -72,7 +72,7 @@ def run_harness(
         "sections": len(sections),
         "hash": inv_hash,
     }
-    print("  Keys: %d, Translatable: %d, Skipped: %d" % (total, translatable, skipped))
+    print(f"  Keys: {total}, Translatable: {translatable}, Skipped: {skipped}")
 
     # Step 2: Build IR (M1)
     print("[M1] Building IR...")
@@ -92,7 +92,7 @@ def run_harness(
         "ir_messages": len(messages),
         "with_semantic": with_semantic,
     }
-    print("  IR messages: %d, With semantic: %d" % (len(messages), with_semantic))
+    print(f"  IR messages: {len(messages)}, With semantic: {with_semantic}")
 
     # Step 3: Context resolution (M2)
     print("[M2] Resolving context...")
@@ -103,11 +103,11 @@ def run_harness(
         "resolved": ctx_stats["resolved"],
         "ambiguous": ctx_stats["ambiguous"],
     }
-    print("  Resolved: %d, Ambiguous: %d" % (ctx_stats["resolved"], ctx_stats["ambiguous"]))
+    print(f"  Resolved: {ctx_stats['resolved']}, Ambiguous: {ctx_stats['ambiguous']}")
 
     # Step 4: Materialize target locale (M3)
-    print("[M3] Materializing %s locale..." % target_lang)
-    locale_path = str(output / ("locale_%s.json" % target_lang))
+    print(f"[M3] Materializing {target_lang} locale...")
+    locale_path = str(output / (f"locale_{target_lang}.json"))
     mat_stats = materialize_locale(inventory_path, target_lang, locale_path)
 
     results["steps"]["M3"] = {
@@ -116,8 +116,10 @@ def run_harness(
         "untranslated": mat_stats["untranslated"],
         "passthrough": mat_stats["passthrough"],
     }
-    print("  Translated: %d, Untranslated: %d, Passthrough: %d" % (
-        mat_stats["translated"], mat_stats["untranslated"], mat_stats["passthrough"]))
+    print(
+        f"  Translated: {mat_stats['translated']}, Untranslated: {mat_stats['untranslated']}, "
+        f"Passthrough: {mat_stats['passthrough']}"
+    )
 
     # Step 5: Roundtrip verification (M4)
     print("[M4] Verifying roundtrip...")
@@ -128,15 +130,16 @@ def run_harness(
         "checked": rt_result.checked,
         "passed": rt_result.passed,
         "failed": rt_result.failed,
-        "pass_rate": "%.1f%%" % (rt_result.pass_rate * 100),
+        "pass_rate": f"{rt_result.pass_rate * 100:.1f}%",
         "mismatches": [
             {"key": m.key, "field": m.field, "source": m.source_value, "target": m.target_value}
             for m in rt_result.mismatches[:20]
         ],
     }
-    print("  Checked: %d, Passed: %d, Failed: %d (%.1f%%)" % (
-        rt_result.checked, rt_result.passed, rt_result.failed,
-        rt_result.pass_rate * 100))
+    print(
+        f"  Checked: {rt_result.checked}, Passed: {rt_result.passed}, "
+        f"Failed: {rt_result.failed} ({rt_result.pass_rate * 100:.1f}%)"
+    )
 
     # Overall status
     all_ok = all(s["status"] == "OK" for s in results["steps"].values())
@@ -157,31 +160,30 @@ def run_harness(
     # Write human-readable report
     with open(readable_path, "w", encoding="utf-8") as f:
         f.write("# i18n Harness Report\n\n")
-        f.write("**Timestamp:** %s\n" % results["timestamp"])
-        f.write("**Source:** %s\n" % source_path)
-        f.write("**Target:** %s\n" % target_lang)
-        f.write("**IR Version:** %s\n" % IR_VERSION)
-        f.write("**Overall:** %s\n\n" % results["overall_status"])
+        f.write("**Timestamp:** {}\n".format(results["timestamp"]))
+        f.write(f"**Source:** {source_path}\n")
+        f.write(f"**Target:** {target_lang}\n")
+        f.write(f"**IR Version:** {IR_VERSION}\n")
+        f.write("**Overall:** {}\n\n".format(results["overall_status"]))
 
         for step, info in sorted(results["steps"].items()):
             status = info.get("status", "UNKNOWN")
-            f.write("## %s [%s]\n\n" % (step, status))
+            f.write(f"## {step} [{status}]\n\n")
             for k, v in info.items():
                 if k == "status":
                     continue
-                f.write("- **%s:** %s\n" % (k, v))
+                f.write(f"- **{k}:** {v}\n")
             f.write("\n")
 
         if rt_result.mismatches:
             f.write("## Mismatches\n\n")
             for m in rt_result.mismatches[:20]:
-                f.write("- `%s` [%s]: `%s` → `%s`\n" % (
-                    m.key, m.field, m.source_value, m.target_value))
+                f.write(f"- `{m.key}` [{m.field}]: `{m.source_value}` → `{m.target_value}`\n")
             if len(rt_result.mismatches) > 20:
-                f.write("- ... and %d more\n" % (len(rt_result.mismatches) - 20))
+                f.write(f"- ... and {len(rt_result.mismatches) - 20} more\n")
 
-    print("\n=== Overall: %s ===" % results["overall_status"])
-    print("Report: %s" % report_path)
+    print(f"\n=== Overall: {results['overall_status']} ===")
+    print(f"Report: {report_path}")
 
     return results
 

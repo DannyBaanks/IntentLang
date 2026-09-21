@@ -24,12 +24,12 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
 from intentlang.translation_engine.harness import run_harness
 
 
 def main():
-    import argparse
 
     parser = argparse.ArgumentParser(
         description="i18n CLI — roundtrip translation engine for React i18next projects",
@@ -57,20 +57,20 @@ def main():
     # Validate source exists
     source = Path(args.source)
     if not source.exists():
-        print("ERROR: Source file not found: %s" % source)
+        print(f"ERROR: Source file not found: {source}")
         sys.exit(1)
 
     # Run pipeline
     try:
         results = run_harness(args.source, args.target_lang, args.output_dir)
     except Exception as e:
-        print("ERROR: %s" % e)
+        print(f"ERROR: {e}")
         sys.exit(1)
 
     # Exit code
     if results["overall_status"] == "PASS":
         if not args.quiet:
-            print("\nDone. Locale generated at: %s" % results.get("readable_report", ""))
+            print(f"\nDone. Locale generated at: {results.get('readable_report', '')}")
         sys.exit(0)
     else:
         print("\nFAILED. Check report for details.")
