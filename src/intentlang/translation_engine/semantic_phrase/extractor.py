@@ -213,7 +213,7 @@ def _extract_modality(text: str) -> tuple[str, list[str]]:
 
 def _extract_conditions(text: str) -> list[str]:
     """Extract conditional clauses."""
-    conditions = []
+    conditions: list[str] = []
     # "if X then Y"
     conditions.extend(
         match.group(1).strip()
@@ -239,7 +239,7 @@ def _extract_conditions(text: str) -> list[str]:
 
 def _extract_consequences(text: str) -> list[str]:
     """Extract consequence phrases."""
-    consequences = []
+    consequences: list[str] = []
     # "will X" where X is destructive
     consequences.extend(
         match.group(1).strip()
@@ -337,7 +337,7 @@ def extract_semantics(surface: str, locale: str = "en") -> ExtractedFacts:
     tech_matches = TECHNICAL_RE.findall(surface)
     if tech_matches:
         # flatten tuples from groups
-        flat = []
+        flat: list[str] = []
         for t in tech_matches:
             if isinstance(t, tuple):
                 flat.extend(x for x in t if x)

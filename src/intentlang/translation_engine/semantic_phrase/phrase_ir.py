@@ -19,6 +19,7 @@ import hashlib
 import json
 from dataclasses import asdict, dataclass, field
 from enum import Enum
+from typing import Any
 
 PHRASE_IR_VERSION = "phrase-ir/1"
 
@@ -81,7 +82,7 @@ class Provenance:
     # ^ deterministic | single_model_roundtrip | dual_model_roundtrip
     #   lexical_plus_model | human_confirmed
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {k: v for k, v in asdict(self).items() if v is not None}
 
 
@@ -134,7 +135,7 @@ class PhraseIR:
 
     def to_dict(self) -> dict:
         """Serialize to dict, preserving all fields."""
-        d = {
+        d: dict[str, Any] = {
             "schema": self.schema,
             "id": self.id,
             "source_locale": self.source_locale,
@@ -165,7 +166,7 @@ class PhraseIR:
         return d
 
     @classmethod
-    def from_dict(cls, d: dict) -> PhraseIR:
+    def from_dict(cls, d: dict[str, Any]) -> PhraseIR:
         """Deserialize from dict."""
         prov = d.get("provenance")
         if prov and isinstance(prov, dict):

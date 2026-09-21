@@ -14,6 +14,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 from intentlang.translation_engine.semantic_phrase.extractor import (
     ExtractedFacts,
@@ -154,7 +155,7 @@ def route_corpus(
     Returns:
         Dict with routing statistics and decisions
     """
-    stats = {
+    stats: dict[str, Any] = {
         "total": len(phrases),
         "ui_message_ir": 0,
         "semantic_phrase": 0,
@@ -204,7 +205,7 @@ def format_routing_report(stats: dict) -> str:
         lines.append(f"Hybrid: {stats['hybrid']} ({hy_pct:.1f}%)")
 
     # Show routing reasons
-    reason_counts = {}
+    reason_counts: dict[str, int] = {}
     for d in stats["decisions"]:
         reason = d["reason"]
         reason_counts[reason] = reason_counts.get(reason, 0) + 1

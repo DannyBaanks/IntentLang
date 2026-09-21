@@ -13,6 +13,7 @@ import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from intentlang.translation_engine.context_resolver import enrich_inventory_with_context
 from intentlang.translation_engine.extractor import build_inventory, generate_hash
@@ -30,7 +31,7 @@ def run_harness(
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
 
-    results = {
+    results: dict[str, Any] = {
         "timestamp": datetime.now(UTC).isoformat(),
         "source": source_path,
         "target_lang": target_lang,

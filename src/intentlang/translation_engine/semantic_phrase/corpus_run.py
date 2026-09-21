@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 from intentlang.translation_engine.semantic_phrase import (
     PhraseStatus,
@@ -127,7 +128,7 @@ def run_corpus_analysis(
     """
     phrases = load_needs_review_phrases(en_json_path, es_json_path)
 
-    results = {
+    results: dict[str, Any] = {
         "total_phrases": len(phrases),
         "verified": 0,
         "needs_review": 0,
@@ -211,7 +212,7 @@ def format_corpus_report(results: dict) -> str:
         lines.append(f"Rejected: {j_pct:.1f}%")
 
     # Show failed check distribution
-    check_counts = {}
+    check_counts: dict[str, int] = {}
     for detail in results["details"]:
         for check in detail["failed_checks"]:
             check_counts[check] = check_counts.get(check, 0) + 1

@@ -382,9 +382,9 @@ def materialize_locale(
     }
 
 
-def _rebuild_nested(flat: dict) -> dict:
+def _rebuild_nested(flat: dict[str, Any]) -> dict[str, Any]:
     """Rebuild nested dict from flat dotted keys."""
-    nested = {}
+    nested: dict[str, Any] = {}
     for key, value in flat.items():
         parts = key.split(".")
         current = nested

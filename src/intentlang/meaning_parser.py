@@ -19,7 +19,7 @@ def _provenance(text: str, language: str, confidence: str = "exact") -> MeaningP
 
 
 def _entity(entity_id: str, concept: str, features: dict[str, str] | None = None) -> MeaningEntity:
-    return MeaningEntity(entity_id, concept, features or {})
+    return MeaningEntity(entity_id, concept, tuple((features or {}).items()))
 
 
 def _resolved(

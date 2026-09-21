@@ -93,7 +93,7 @@ def realize_meaning(meaning: Meaning, language: str) -> str | None:
             "perfective": {"en": "Alice opened the door", "es": "Alicia abrió la puerta", "ja": "アリスはドアを開けた", "zh": "爱丽丝打开了门"},
             "simple": {"en": "Alice opens the door", "es": "Alicia abre la puerta", "ja": "アリスはドアを開ける", "zh": "爱丽丝打开门"},
         }
-        return forms.get(meaning.aspect, {}).get(language)
+        return forms.get(meaning.aspect or "", {}).get(language)
 
     if meaning.predicate in {"push", "carry"} and meaning.polarity == "positive" and meaning.aspect in {"perfective", "simple"}:
         return _transitive(meaning, meaning.predicate, language)

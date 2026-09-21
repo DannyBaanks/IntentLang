@@ -18,6 +18,7 @@ import json
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any
 
 CORPUS_VERSION = "1.0.0"
 
@@ -226,7 +227,7 @@ def save_corpus(entries: list[CorpusEntry], output_path: str) -> dict:
 
     Returns stats dict.
     """
-    corpus = {
+    corpus: dict[str, Any] = {
         "meta": {
             "version": CORPUS_VERSION,
             "total_entries": len(entries),
@@ -237,7 +238,7 @@ def save_corpus(entries: list[CorpusEntry], output_path: str) -> dict:
     }
 
     # Stats
-    type_counts = {}
+    type_counts: dict[str, int] = {}
     total_complexity = 0.0
     for e in entries:
         type_counts[e.phrase_type] = type_counts.get(e.phrase_type, 0) + 1
