@@ -9,6 +9,12 @@ formato del texto.
 > Si una traducción cambia quién hizo algo, qué ocurrió, cuándo ocurrió o si
 > ocurrió, IntentLang debe detectarlo.
 
+El objetivo a largo plazo y los pasos para acercarnos están en el
+[roadmap de análisis y traducción semántica](ROADMAP.md), con milestones,
+criterios de aceptación y limitaciones auditadas. El
+[primer sprint de implementación](docs/superpowers/plans/2026-10-01-semantic-trust-foundations.md)
+prioriza los falsos positivos antes de ampliar la cobertura.
+
 ```text
 Alice saw the rabbit
         ↓
