@@ -1,0 +1,20 @@
+{"case_id":"meaning-agent-swap","kind":"meaning_pair","phenomenon":"roles","language":"en","source":"Alice saw the rabbit","candidate":"The rabbit saw Alice","expected":{"relation":"different"}}
+{"case_id":"meaning-never-negation","kind":"meaning_pair","phenomenon":"negation","language":"en","source":"Alice saw the rabbit","candidate":"Alice never saw the rabbit","expected":{"relation":"different"}}
+{"case_id":"meaning-passive-agent","kind":"meaning_pair","phenomenon":"passive_voice","language":"en","source":"Alice pushed the rabbit","candidate":"Alice was pushed by the rabbit","expected":{"relation":"different"}}
+{"case_id":"meaning-invented-participants","kind":"meaning_pair","phenomenon":"participants","language":"en","source":"Alice is opening the door","candidate":"Bob is opening the window","expected":{"relation":"different"}}
+{"case_id":"meaning-added-clause","kind":"meaning_pair","phenomenon":"content_coverage","language":"en","source":"Alice saw the rabbit","candidate":"Alice saw the rabbit and then died","expected":{"relation":"different"}}
+{"case_id":"meaning-modality-prohibition","kind":"meaning_pair","phenomenon":"modality","language":"en","source":"Alice must leave","candidate":"Alice must not leave","expected":{"relation":"different"}}
+{"case_id":"meaning-fatigue-subject-negation","kind":"meaning_pair","phenomenon":"participants_and_negation","language":"en","source":"Alice was beginning to get very tired","candidate":"Bob was not beginning to get tired","expected":{"relation":"different"}}
+{"case_id":"control-equivalent-see-en","kind":"meaning_pair","phenomenon":"roles","language":"en","source":"Alice saw the rabbit","candidate":"Alice saw the rabbit","expected":{"relation":"equivalent"}}
+{"case_id":"control-equivalent-see-es","kind":"meaning_pair","phenomenon":"cross_language","language":"en","target_language":"es","source":"Alice saw the rabbit","candidate":"Alicia vio al conejo","expected":{"relation":"equivalent"}}
+{"case_id":"control-equivalent-open-es","kind":"meaning_pair","phenomenon":"cross_language","language":"en","target_language":"es","source":"Alice is opening the door","candidate":"Alicia está abriendo la puerta","expected":{"relation":"equivalent"}}
+{"case_id":"control-equivalent-must-es","kind":"meaning_pair","phenomenon":"cross_language","language":"en","target_language":"es","source":"Alice must leave","candidate":"Alicia debe irse","expected":{"relation":"equivalent"}}
+{"case_id":"control-different-explicit-negation","kind":"meaning_pair","phenomenon":"negation","language":"en","source":"Alice saw the rabbit","candidate":"Alice did not see the rabbit","expected":{"relation":"different"}}
+{"case_id":"control-different-push-agent","kind":"meaning_pair","phenomenon":"roles","language":"en","source":"Alice pushed the rabbit","candidate":"The rabbit pushed Alice","expected":{"relation":"different"}}
+{"case_id":"intent-direct-copy","kind":"intent_surface","phenomenon":"direct_order","language":"es","source":"copia el archivo","expected":{"can_act":true,"primitive":"COPY"}}
+{"case_id":"intent-direct-remove","kind":"intent_surface","phenomenon":"direct_order","language":"es","source":"borra el archivo","expected":{"can_act":true,"primitive":"REMOVE"}}
+{"case_id":"intent-prohibition-copy","kind":"intent_surface","phenomenon":"prohibition","language":"es","source":"no copies el archivo","expected":{"can_act":false}}
+{"case_id":"intent-prohibition-remove","kind":"intent_surface","phenomenon":"prohibition","language":"es","source":"no borres el archivo","expected":{"can_act":false}}
+{"case_id":"intent-condition-remove","kind":"intent_surface","phenomenon":"condition","language":"es","source":"si falla, borra el archivo","expected":{"can_act":false}}
+{"case_id":"intent-described-order","kind":"intent_surface","phenomenon":"reported_speech","language":"es","source":"el manual dice: borra el archivo","expected":{"can_act":false}}
+{"case_id":"control-intent-unknown","kind":"intent_surface","phenomenon":"unsupported","language":"es","source":"qwertzuiop el archivo","expected":{"can_act":false}}

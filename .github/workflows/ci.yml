@@ -72,6 +72,50 @@ jobs:
         run: python -m pytest -q --tb=short
         timeout-minutes: 20
 
+  adversarial:
+    name: Adversarial Evidence (R0)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Informativo mientras R1–R3 cierran las regresiones documentadas.
+    # El job puede fallar; no borrar el exit code ni llamarlo verificación verde.
+    # Promover a gate obligatorio según docs/evaluation.md.
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+
+      - name: Install dependencies
+        run: python -m pip install -e .[dev]
+
+      - name: Download WordNets
+        run: python ci/download_wordnets.py
+
+      - name: Run adversarial benchmark
+        id: benchmark
+        run: python ci/run_adversarial_benchmark.py --output-dir adversarial-evidence
+
+      - name: Record benchmark outcome
+        if: always()
+        env:
+          BENCHMARK_OUTCOME: ${{ steps.benchmark.outcome }}
+        run: |
+          echo "R0 benchmark outcome: $BENCHMARK_OUTCOME (informational; inspect the evidence artifact)." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload adversarial evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adversarial-evidence
+          path: adversarial-evidence/
+          if-no-files-found: warn
+          retention-days: 30
+
   lint:
     name: Lint & Type Check
     runs-on: ubuntu-latest

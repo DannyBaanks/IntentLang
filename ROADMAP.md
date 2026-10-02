@@ -85,6 +85,7 @@ Los siete contrastes dirigidos del comparador fallaron; **no constituyen una est
 10. **Una traducción acreditada no acredita una ejecución.** El ejecutor tiene su propia frontera de permisos.
 11. **La procedencia debe permitir repetir el resultado.** Un hash sin versión de reglas, recursos y contexto es insuficiente.
 12. **Cada ampliación debe pagar su prueba.** Más idiomas o construcciones necesitan ejemplos positivos, negativos y de abstención.
+13. **Cada deuda o hueco tiene un engine responsable.** El núcleo coordina engines especializados; los helpers aportan evidencia identificable y nunca convierten una abstención en certeza por estar de acuerdo entre sí.
 
 ## 4. Arquitectura objetivo
 
@@ -134,9 +135,64 @@ Las interfaces siguientes son **contratos propuestos para milestones futuros**. 
 
 Se puede empezar usando los dataclasses existentes. No hace falta crear un framework de plugins o reescribir toda la biblioteca para cumplir los primeros gates.
 
+### Un motor compuesto, no un «cerebrote» monolítico
+
+La arquitectura objetivo es un **motor asistido por engines especializados**.
+Si una evaluación descubre una deuda, hueco o fallo, se registra como capacidad
+pendiente de un engine concreto. Se crea un helper especializado cuando la
+familia de problemas lo exige, o se amplía el engine responsable si la capacidad
+pertenece a su contrato. Ningún hueco puede quedarse como «falló el cerebro» sin
+caso reproducible, responsable y criterio de cierre.
+
+La unidad de especialización es una capacidad semántica comprobable, no cada
+frase que falla. Así evitamos sustituir un monolito por miles de excepciones de
+texto exacto. Un nuevo engine necesita una razón, un contrato y un benchmark.
+
+| Engine o familia propuesta | Responsabilidad | Ejemplo de hueco que le corresponde |
+|---|---|---|
+| Segmentación y cobertura | Delimitar texto y contenido pendiente | Una segunda cláusula desaparece |
+| Léxico y sentidos | Proponer sentidos dentro del idioma/dominio | Una palabra tiene varias interpretaciones |
+| Roles y eventos | Agente, paciente, voz y estructura de eventos | La pasiva intercambia quién actuó |
+| Polaridad y alcance | Negación, prohibición y qué proposición afectan | «No todos» se confunde con «ninguno» |
+| Tiempo, aspecto y modalidad | Temporalidad, obligación, permiso y posibilidad | `must not` se interpreta como `must` |
+| Cantidades y unidades | Cantidad, comparadores, unidades y rangos | Se pierde «como máximo dos» |
+| Contexto y referencias | Referentes, posesión, elipsis y actos de habla | «Su reloj» tiene dos dueños posibles |
+| Realización por idioma | Gramática y superficie destino | Una IR negativa produce afirmación |
+| Terminología y formato | Glosarios, placeholders y reensamblaje | Se cambia un término técnico o un slot |
+| Comparación y evidencia | Evaluar relaciones y diferencias acreditadas | Una diferencia no comprobada recibe PASS |
+| Compilación y permisos | Fidelidad del programa y autorización | Una prohibición habilita REMOVE |
+
+Son límites de responsabilidad propuestos, no once motores ya implementados ni
+una obligación de crear once paquetes ahora. Se extraen de los módulos actuales
+progresivamente, conservando APIs compatibles y tests de comportamiento.
+
+**Contrato mínimo de un resultado de engine:** `engine_id`, versión,
+capacidades, estado, hechos sustentados, huecos, razones, supuestos,
+referencias a evidencia, duración y dependencias. Un engine puede responder
+«no sé», «no aplica» o «necesito contexto». El orquestador conserva esas
+respuestas y valida compatibilidad antes de combinar hechos.
+
+**Traza mínima de una solicitud:** orden de engines, digest de entrada y salida,
+versiones, contexto utilizado, alternativas descartadas, estado y engine que
+emitió cada decisión. El reporte debe localizar la etapa fallida y permitir
+reproducirla por separado. Si aún no se conoce la causa raíz, escribir
+«etapa observada» y «causa por investigar»; no culpar al último comparador solo
+porque fue quien mostró el problema.
+
+**Regla de ayuda:** ante un hueco, consultar los helpers declarados para esa
+capacidad y registrar qué cambió cada uno. Si ninguno aporta evidencia suficiente,
+mantener el hueco y crear su issue. La aceptación no depende de mayoría de engines:
+tres helpers con el mismo sesgo no constituyen tres pruebas independientes.
+
+**Multicore:** primero significa módulos cooperantes y aislables. La ejecución
+real sobre varios núcleos es una optimización posterior: correr en paralelo
+solo engines sin dependencias pendientes, con presupuestos por componente,
+cancelación y combinación determinista. Medir procesos frente a threads según
+la carga y los límites de Python; no prometer paralelismo CPU solo por usar async.
+
 ## 5. Milestones y dependencias
 
-Se usa el prefijo **R** para no confundir este roadmap con los M0–M7 que ya aparecen en los experimentos del repositorio. Todos los R están pendientes al escribir este documento. La ruta específica de traducción de texto usa **T** y aparece después de R12.
+Se usa el prefijo **R** para no confundir este roadmap con los M0–M7 que ya aparecen en los experimentos del repositorio. R0 tiene una primera entrega reproducible; las correcciones del motor y los demás milestones siguen pendientes. La ruta específica de traducción de texto usa **T** y aparece después de R12.
 
 | Milestone | Entregable | Depende de | Gate principal |
 |---|---|---|---|
@@ -145,6 +201,7 @@ Se usa el prefijo **R** para no confundir este roadmap con los M0–M7 que ya ap
 | R2 | Identidad semántica estructural | R0 | Renombrar IDs conserva identidad; cambiar relaciones la altera |
 | R3 | Veredicto uniforme y realizador fiel | R1, R2 | Ningún significado incompleto obtiene equivalencia acreditada |
 | R4 | Corpus independiente y evaluación por fenómenos | R0; gate completo tras R3 | Falsos positivos y cobertura medidos sobre holdout |
+| R-MOD | Orquestación modular y engines de ayuda | Contratos tras R0; extracción junto a R1–R6 | Cada hueco/decisión tiene responsable, traza y prueba aislada |
 | R5 | Gramática composicional de dominio limitado | R1–R4 | Generalización a entidades y combinaciones no vistas |
 | R6 | Contexto, ambigüedad y actos de habla | R5 | Alternativas o aclaración cuando faltan referentes o alcance |
 | R7 | Generación y búsqueda de traducciones | R3–R6 | Mejor calidad dentro del presupuesto sin más falsos positivos |
@@ -156,21 +213,42 @@ Se usa el prefijo **R** para no confundir este roadmap con los M0–M7 que ya ap
 
 No iniciar R7 para compensar un R3 débil: buscar más candidatos con un evaluador incorrecto produce más formas de equivocarse.
 
+### R-MOD — Engines pequeños, trazables y cooperantes
+
+- [ ] Mapear los módulos actuales a responsabilidades antes de extraer componentes.
+- [ ] Definir contratos tipados de engine, resultado y evidencia; fijar qué engine posee cada rasgo y qué helpers pueden asistirlo.
+- [ ] Registrar una traza por solicitud, con versiones y decisiones por componente; evitar logs que copien secretos o documentos completos por defecto.
+- [ ] Crear issues por familia de huecos con input mínimo, engine responsable, impacto, reproducer y gate de cierre.
+- [ ] Extraer un engine cuando tenga una capacidad y contrato propios; conservar pruebas end-to-end para que interfaces correctas no escondan integración incorrecta.
+- [ ] Probar cada engine aislado, con dependencias ausentes, y en composición con helpers que discrepan.
+- [ ] Mantener la abstención si un helper falta, agota presupuesto o devuelve evidencia incompatible; registrar el motivo y la degradación.
+- [ ] Comparar pipeline secuencial y ejecución paralela con la misma entrada, recursos, semillas y presupuesto.
+
+**Gate:** el reporte identifica quién generó, transformó y verificó cada hecho;
+un fallo de roles puede reproducirse sin arrancar el traductor completo. La
+versión paralela conserva decisiones y trazas equivalentes a la secuencial;
+su utilidad se demuestra con medición, no con el número de módulos. Ningún
+engine puede ejecutar acciones ni sobrescribir hechos de otro fuera de su
+contrato. El primer experimento de extracción se decide después de R0, evitando
+una reescritura masiva que impida comparar la línea base.
+
 ## 6. R0 — Congelar la evidencia y corregir la interpretación de las métricas
 
 **Resultado:** una persona ajena al proyecto puede reproducir la auditoría y distinguir fallos de infraestructura de errores semánticos.
 
 **Archivos existentes:** `ci/run_semantic_benchmark.py`, `corpus/semantic/meaning_m1.jsonl`, `.github/workflows/ci.yml`, `README.md`.
-**Archivos propuestos:** `corpus/semantic/adversarial_regressions.jsonl`, `ci/run_adversarial_benchmark.py`, `tests/test_adversarial_benchmark.py`, `docs/evaluation.md`.
+**Archivos añadidos en la primera entrega:** `corpus/semantic/adversarial_regressions.jsonl`, `ci/run_adversarial_benchmark.py`, `tests/test_adversarial_benchmark.py`, [docs/evaluation.md](docs/evaluation.md).
+
+**Estado de la primera entrega:** 20 casos de regresión y controles, incluidos pares inglés/español. El motor actual produce 8 casos aprobados, 11 falsos positivos y 1 abstención; el runner sale con código 1. Nueve expectativas se cumplen porque la abstención segura también satisface un caso negativo. Las 30 pruebas del detector pasan. Esto hace visible la deuda, sin corregir todavía el motor. Otros hallazgos de la auditoría (realizador, atributos del grafo y verificadores de frase/UI) necesitan ampliar el corpus; tampoco existe aún un holdout independiente ni un conteo validado de construcciones distintas.
 
 - [ ] Registrar los contraejemplos de esta auditoría con IDs estables y comportamiento esperado.
-- [ ] Añadir controles positivos vecinos: no arreglar una negación haciendo que toda oración se vuelva UNKNOWN.
-- [ ] Definir categorías `false_accept`, `false_reject`, `abstain`, `infrastructure_error` y `invalid_fixture`.
+- [x] Añadir controles positivos vecinos: no arreglar una negación haciendo que toda oración se vuelva UNKNOWN.
+- [x] Definir categorías `false_accept`, `false_reject`, `abstain`, `infrastructure_error` y `invalid_fixture`.
 - [ ] Separar conteo de registros, variantes, construcciones, predicados y claves canónicas únicas.
-- [ ] Hacer que el runner de aceptación salga distinto de cero ante falsos positivos críticos, datos inválidos o fallos de infraestructura.
-- [ ] Mantener el informe incluso cuando el gate falla; registrar commit, comando, duración y recursos.
-- [ ] Explicar en README el dominio controlado del experimento y el significado de sus cuatro UNKNOWN.
-- [ ] Separar la evidencia del benchmark M0 de intención del benchmark de Meaning IR: hoy no son el mismo recorrido.
+- [x] Hacer que el runner de aceptación salga distinto de cero ante falsos positivos críticos, datos inválidos o fallos de infraestructura.
+- [x] Mantener el informe incluso cuando el gate falla; registrar commit, comando, duración y recursos.
+- [x] Explicar en README el dominio controlado del experimento y el significado de sus cuatro UNKNOWN.
+- [x] Separar la evidencia del benchmark M0 de intención del benchmark de Meaning IR: hoy no son el mismo recorrido.
 
 **Gate:** antes de arreglar producción, el runner debe detectar los fallos actuales; su exit code no puede ser verde si no ejecutó casos. Un reporte recién generado debe identificar explícitamente su revisión y datos de entrada. No incorporar estos fallos como «expected failures» permanentes para esconder deuda.
 

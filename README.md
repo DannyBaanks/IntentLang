@@ -113,6 +113,13 @@ Las cuatro variantes desconocidas contienen un verbo inventado —“blorps”,
 “blorpea” y equivalentes—. IntentLang no intentó adivinar qué significan. Eso
 es una victoria de seguridad, no un fallo de traducción.
 
+Estas cifras pertenecen al corpus controlado: 100 registros no significan 100
+significados independientes. La auditoría encontró 20 claves semánticas distintas
+en sus variantes inglesas, incluyendo `UNKNOWN`, y contraejemplos que el motor
+acepta incorrectamente. El [benchmark adversarial R0](docs/evaluation.md)
+separa esos falsos positivos, los controles y las abstenciones. No debe
+interpretarse el 99% como precisión general de traducción.
+
 Importante: este resultado todavía corresponde a un corpus controlado, no a la
 traducción completa de un libro. El siguiente reto es ampliar el corpus con
 capítulos, diálogos, referencias largas y ambigüedad narrativa.
@@ -207,6 +214,19 @@ WN_DATA_DIR=/tmp/intentlang-wn-data \
 PYTHONPATH=/tmp/intentlang-deps:src \
 pytest -q -p no:cacheprovider
 ```
+
+Para reproducir la regresión adversarial (actualmente falla por errores
+semánticos conocidos y conserva el reporte):
+
+```bash
+WN_DATA_DIR=/tmp/intentlang-wn-data \
+  python ci/run_adversarial_benchmark.py \
+  --output-dir /tmp/intentlang-adversarial
+```
+
+Salida: `adversarial_report.json` y `adversarial_report.md`. Códigos: `0` si las
+expectativas se cumplen, `1` por discrepancias de comportamiento y `2` por
+datos/infraestructura inválidos. El runner no ejecuta acciones del sistema.
 
 ## Demo visual
 
