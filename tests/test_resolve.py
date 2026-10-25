@@ -350,6 +350,22 @@ def test_un_solo_verbo_sigue_resolviendo():
     assert intent.primitive == "COPY"
 
 
+@pytest.mark.parametrize(
+    "text",
+    [
+        "no copies el archivo",
+        "no borres el archivo",
+        "si falla, borra el archivo",
+        "el manual dice: borra el archivo",
+    ],
+)
+def test_contexto_negativo_condicional_o_reportado_no_es_ejecutable(text):
+    intent = resolve(text, "es")
+
+    assert intent.status is Status.UNKNOWN
+    assert intent.can_act() is False
+
+
 def test_la_competencia_se_detecta_en_los_tres_idiomas():
     """No es una regla del espanol: es del modelo de intencion."""
     es = resolve("copia y borra el archivo", "es")

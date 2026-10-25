@@ -71,6 +71,24 @@ def _first_operand(lemas: list[str], lang: str, usado: int | None) -> Concept | 
     return None
 
 
+def _has_non_executable_context(text: str, lang: str) -> bool:
+    markers = {
+        "en": (
+            " not ", " never ", " if ", " when ", " the manual says",
+            " the document says", " says: ", " said: ", " according to ",
+        ),
+        "es": (
+            " no ", " nunca ", " si ", " cuando ", " el manual dice",
+            " el documento dice", " la guía dice", " la guia dice",
+            " dice: ", " dijo: ", " según ", " segun ",
+        ),
+        "ja": ("ない", "ません", "もし", "場合", "マニュアルには", "と言った"),
+        "zh": ("不", "没", "如果", "当", "手册说", "说明书说", "据说"),
+    }.get(lang, ())
+    padded = f" {text.casefold()} "
+    return any(marker in padded for marker in markers)
+
+
 # Preposiciones que indican scope/destination (para COPY/MOVE)
 _SCOPE_PREPOSITIONS = {
     "es": {"a", "al", "en", "hacia", "para"},
@@ -126,6 +144,9 @@ def resolve(text: str, lang: str, mode: str = "strict",
         surface=text, language=lang, lexical_source=source_id(lang),
         resolution="lexicon", confidence="exact", mode=mode,
     )
+
+    if _has_non_executable_context(text, lang):
+        return Intent(None, None, None, Status.UNKNOWN, prov)
 
     verbos = _all_verbs(lemas, lang)
     if not verbos:

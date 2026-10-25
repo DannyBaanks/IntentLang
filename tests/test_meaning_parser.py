@@ -53,3 +53,28 @@ def test_unknown_sentence_fails_closed():
 
     assert meaning.status == "UNKNOWN"
     assert meaning.predicate is None
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "The rabbit saw Alice",
+        "Alice was pushed by the rabbit",
+        "Bob is opening the window",
+        "Alice saw the rabbit and then died",
+        "Alice must not leave",
+        "Bob was not beginning to get tired",
+    ],
+)
+def test_unsupported_semantic_variants_fail_closed(text):
+    meaning = parse_meaning(text, "en")
+
+    assert meaning.status == "UNKNOWN"
+    assert meaning.predicate is None
+
+
+def test_never_negation_is_not_parsed_as_positive():
+    meaning = parse_meaning("Alice never saw the rabbit", "en")
+
+    assert meaning.status == "RESOLVED"
+    assert meaning.polarity == "negative"
