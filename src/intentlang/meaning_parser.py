@@ -60,6 +60,39 @@ def _unknown(text: str, language: str) -> Meaning:
     )
 
 
+def _has_negation(text: str, language: str) -> bool:
+    markers = {
+        "en": (" not ", " never ", " no "),
+        "es": (" no ", " nunca "),
+        "ja": ("なかった",),
+        "zh": ("不", "没", "未"),
+    }.get(language, ())
+    padded = f" {text.casefold()} "
+    return any(marker in padded for marker in markers)
+
+
+def _has_compound_clause(text: str, language: str) -> bool:
+    lower = text.casefold().strip()
+    discourse_prefixes = {
+        "en": ("then ",),
+        "es": ("entonces ",),
+        "ja": ("すると",),
+        "zh": ("然后",),
+    }.get(language, ())
+    for prefix in discourse_prefixes:
+        if lower.startswith(prefix):
+            lower = lower[len(prefix):]
+            break
+    markers = {
+        "en": (" and ", " then "),
+        "es": (" y ", " entonces "),
+        "ja": ("そして", "それから"),
+        "zh": ("然后", "并且"),
+    }.get(language, ())
+    padded = f" {lower} "
+    return any(marker in padded for marker in markers)
+
+
 def _fatigue(text: str, language: str) -> Meaning | None:
     lower = text.casefold()
     markers = {
@@ -68,8 +101,14 @@ def _fatigue(text: str, language: str) -> Meaning | None:
         "ja": ("疲れ", "始め"),
         "zh": ("疲倦", "开始"),
     }
+    agents = {"en": "alice", "es": "alicia", "ja": "アリス", "zh": "爱丽丝"}
     required = markers.get(language)
-    if required and all(marker in lower for marker in required):
+    agent = agents.get(language)
+    if (
+        required and agent and lower.lstrip().startswith(agent)
+        and not _has_negation(lower, language)
+        and all(marker in lower for marker in required)
+    ):
         return _resolved(
             text, language, "fatigue",
             [MeaningRole("experiencer", entity="alice")],
@@ -113,13 +152,19 @@ def _take_out(text: str, language: str) -> Meaning | None:
 def _see(text: str, language: str) -> Meaning | None:
     lower = text.casefold()
     markers = {
-        "en": (("alice", "rabbit", ("saw",), "positive"), ("alice", "rabbit", ("did not see",), "negative")),
+        "en": (
+            ("alice", "rabbit", ("did not see",), "negative"),
+            ("alice", "rabbit", ("never saw",), "negative"),
+            ("alice", "rabbit", ("saw",), "positive"),
+        ),
         "es": (("alicia", "conejo", ("no vio",), "negative"), ("alicia", "conejo", ("vio",), "positive")),
         "ja": (("アリス", "ウサギ", ("見なかった",), "negative"), ("アリス", "ウサギ", ("見た",), "positive")),
         "zh": (("爱丽丝", "兔子", ("没有", "看见"), "negative"), ("爱丽丝", "兔子", ("看见",), "positive")),
     }
     for agent, obj, required, polarity in markers.get(language, ()):
         if agent.casefold() in lower and obj.casefold() in lower and all(marker.casefold() in lower for marker in required):
+            if lower.find(agent.casefold()) > lower.find(obj.casefold()):
+                return None
             return _resolved(
                 text, language, "see",
                 [MeaningRole("agent", entity="alice"), MeaningRole("object", entity="rabbit")],
@@ -137,6 +182,25 @@ def _open(text: str, language: str) -> Meaning | None:
         "ja": {"progressive": "開けている", "perfect": "開けたことがある", "past": "開けた", "present": "開ける", "imperative": "ドアを開けて"},
         "zh": {"progressive": "正在打开", "perfect": "已经打开", "past": "打开了", "present": "打开门", "imperative": "打开门"},
     }.get(language, {})
+    imperative_marker = forms.get("imperative")
+    if imperative_marker and imperative_marker.casefold() in lower and not any(name in lower for name in ("alice", "alicia", "アリス", "爱丽丝")):
+        roles = [MeaningRole("agent", entity="addressee"), MeaningRole("object", entity="door")]
+        entities = [_entity("addressee", "person.addressee"), _entity("door", "object.door")]
+        return _resolved(text, language, "open", roles, entities, modality="imperative")
+
+    participants = {
+        "en": ("alice", "door"),
+        "es": ("alicia", "puerta"),
+        "ja": ("アリス", "ドア"),
+        "zh": ("爱丽丝", "门"),
+    }.get(language)
+    if (
+        not participants
+        or any(marker not in lower for marker in participants)
+        or lower.find(participants[0]) > lower.find(participants[1])
+        or _has_negation(lower, language)
+    ):
+        return None
     if language == "en":
         if "is " in lower and "opening" in lower:
             roles = [MeaningRole("agent", entity="alice"), MeaningRole("object", entity="door")]
@@ -150,11 +214,6 @@ def _open(text: str, language: str) -> Meaning | None:
         roles = [MeaningRole("agent", entity="alice"), MeaningRole("object", entity="door")]
         entities = [_entity("alice", "person.alice"), _entity("door", "object.door")]
         return _resolved(text, language, "open", roles, entities, tense="present", aspect="progressive")
-    imperative_marker = forms.get("imperative")
-    if imperative_marker and imperative_marker.casefold() in lower and not any(name in lower for name in ("alice", "alicia", "アリス", "爱丽丝")):
-        roles = [MeaningRole("agent", entity="addressee"), MeaningRole("object", entity="door")]
-        entities = [_entity("addressee", "person.addressee"), _entity("door", "object.door")]
-        return _resolved(text, language, "open", roles, entities, modality="imperative")
     for aspect, marker in forms.items():
         if aspect == "imperative":
             continue
@@ -172,10 +231,14 @@ def _push(text: str, language: str) -> Meaning | None:
     marker = {"en": "pushed", "es": "empujó", "ja": "押した", "zh": "推了"}.get(language)
     if not marker or marker.casefold() not in lower:
         return None
+    if language == "en" and " was pushed by " in f" {lower} ":
+        return None
     names = {
         "alice": ("alice", "alicia", "アリス", "爱丽丝"),
         "rabbit": ("rabbit", "conejo", "ウサギ", "兔子"),
     }
+    if any(not any(name.casefold() in lower for name in choices) for choices in names.values()):
+        return None
     positions = {
         entity: min((lower.find(marker.casefold()) for marker in markers if marker.casefold() in lower), default=10**9)
         for entity, markers in names.items()
@@ -205,6 +268,9 @@ def _carry(text: str, language: str) -> Meaning | None:
 
 def _leave(text: str, language: str) -> Meaning | None:
     lower = text.casefold()
+    agent = {"en": "alice", "es": "alicia", "ja": "アリス", "zh": "爱丽丝"}.get(language)
+    if not agent or agent not in lower or _has_negation(lower, language):
+        return None
     markers = {
         "en": ((("must", "leave"), "necessity"), (("may", "leave"), "possibility")),
         "es": ((("debe", "irse"), "necessity"), (("puede", "irse"), "possibility")),
@@ -293,7 +359,7 @@ def _court(text: str, language: str) -> Meaning | None:
 
 def parse_meaning(text: str, language: str) -> Meaning:
     """Parse one simple sentence, failing closed when no rule is proven."""
-    if not text.strip():
+    if not text.strip() or _has_compound_clause(text, language):
         return _unknown(text, language)
     for parser in (_fatigue, _take_out, _drink, _remarkable, _court, _see, _open, _push, _carry, _leave, _location, _quantifier):
         meaning = parser(text, language)
